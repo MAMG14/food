@@ -20,7 +20,7 @@ Implementar por bloques (skill `sdd`): tareas en orden, tests de lógica primero
 
 - [ ] **T5. Gateway de notificaciones + zona horaria.** RF-14, RF-19
   - Hecho cuando: existe la interfaz y su implementación real; al arrancar se fija la zona local; un aviso de prueba programado a +1 min llega en Android (verificación manual, el código de prueba no se queda).
-  - Código hecho. Test de integración `integration_test/real_gateway_test.dart` (avisos pendientes reales: agrupar, borrar, apagar). Falta: ejecutarlo con el permiso concedido (en iOS hay que pulsar «Permitir» una vez; `simctl` no lo concede) y comprobar en dispositivo que el aviso llega (hora de aviso a +2 min).
+  - Código hecho. `integration_test/real_gateway_test.dart` en verde en simulador iOS (avisos pendientes reales: agrupar, borrar, apagar). Falta: comprobar en dispositivo que el aviso llega (hora de aviso a +2 min).
 
 - [x] **T6. `ReminderScheduler.resync` + textos i18n + tests.** RF-7, RF-14, RF-15
   - Hecho cuando: test con gateway falso verifica cancelar todo + programar los slots esperados con texto singular («X caduca mañana») y plural («N artículos por caducar»); el test también corre con `en` y obtiene los textos en inglés (sin idioma fijo en el scheduler).

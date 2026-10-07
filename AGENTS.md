@@ -28,7 +28,9 @@ Estado en una sola fuente: ciclo de vida en `Estado:` de cada `spec.md`; progres
 - Dependencias: `flutter pub get`
 - Análisis: `flutter analyze`
 - Tests: `flutter test`
-- Tests de integración (simulador/dispositivo): `flutter test integration_test -d <device>`
+- Tests de integración (simulador/dispositivo): `flutter test integration_test -d <device> --no-uninstall`
+  - `--no-uninstall` conserva el permiso de notificaciones; la primera vez hay que pulsar «Permitir».
+  - Si iOS responde «Error 2003 … Source is not authorized» con el permiso concedido, reinicia el simulador (`xcrun simctl shutdown <udid> && xcrun simctl boot <udid>`).
 - Ejecutar: `flutter run`
 
 ## Flujo SDD (Cursor)
