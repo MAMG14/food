@@ -64,9 +64,23 @@ Archivos y responsabilidades · Funciones puras (con `today` local como parámet
 
 Máximo ~10 tareas por spec; 20–30 min cada una. Si salen más, propon dividir la spec.
 
-## Implementación
+## Revisión del plan (obligatoria antes de pedir aprobación)
 
-Una sola tarea cada vez: tests de lógica primero (en rojo), después el código, `flutter test` en verde, marcar la tarea y parar.
+Antes de presentar `plan.md` + `tasks.md` al usuario, lanzar el subagente `reviewer` (`.cursor/agents/reviewer.md`) con las rutas de constitución, spec, plan y tareas. Incorporar o rebatir cada hallazgo y resumirlos al usuario junto al plan. Si un hallazgo cambia el QUÉ, vuelve a la spec.
+
+## Implementación (por bloques)
+
+- Las tareas se hacen **en orden y de una en una** (tests de lógica primero en rojo, código, verde, marcar la tarea, **commit** `NNN/Tn: …`), pero **sin parar entre tareas**.
+- Parar solo en un **punto de control**: verificación manual en dispositivo que no cubran los tests de integración, decisión que la spec no resuelve, o fallo que no sabes arreglar.
+- En cada punto de control: resumen de lo hecho, qué debe comprobar el usuario y cómo.
+- Una tarea que depende del dispositivo se cierra con un test de integración (`integration_test/`) cuando sea posible; si no, queda abierta con “Falta: …” hasta la confirmación del usuario.
+- Decisiones nuevas durante la implementación → `docs/decisions.md`.
+
+## Estado (una sola fuente)
+
+- `spec.md` → `Estado:` borrador | aprobada | implementada (ciclo de vida).
+- `tasks.md` → checkboxes (progreso). No duplicar el progreso en otros archivos.
+- `MEMORY.md` → resumen y próximo paso; se actualiza al cerrar una fase.
 
 ## Validación
 
@@ -77,6 +91,6 @@ Recorrer la spec RF por RF: test o prueba manual. Veredicto `APROBADO` o `CAMBIO
 - Coordinator: orquesta; no edita código de app.
 - Planner: solo `specs/**` (+ docs de producto si se pide).
 - Implementer: una tarea; no cambia la spec.
-- Reviewer: no modifica producto; solo detecta.
+- Reviewer: no modifica producto; solo detecta. Definido como subagente de solo lectura en `.cursor/agents/reviewer.md`.
 
 Al delegar, pasar petición del usuario, fase, rutas y resultado de la fase anterior (los subagentes no ven el chat completo).

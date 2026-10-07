@@ -6,9 +6,10 @@ alwaysApply: true
 # Food — reglas globales
 
 - Lee `docs/constitution.md`, `AGENTS.md` y `MEMORY.md` antes de cambiar comportamiento de producto.
-- **La spec manda**: no implementes nada que no esté en la spec activa bajo `specs/`.
+- **La spec manda**: no implementes nada que no esté en la spec activa bajo `specs/`. Un hook bloquea editar `lib/` si ninguna spec está `aprobada`.
 - Si falta una decisión: para y pregunta. No asumas backends, login, recordatorios ni marca definitiva.
 - Código/identificadores en **inglés**; UI y docs de producto en **español**.
-- Tests de lógica de dominio: `flutter test` debe quedar en verde antes de cerrar una tarea.
-- No commits salvo que el usuario lo pida.
-- Al cerrar una fase SDD, actualiza `MEMORY.md`.
+- `flutter analyze` y `flutter test` en verde antes de cerrar una tarea (los hooks lo comprueban al terminar el turno).
+- **Commit local por tarea terminada** (`NNN/Tn: descripción`). Nunca `push`, `--amend` ni reescribir historia sin que el usuario lo pida.
+- Estado: progreso en `tasks.md`, ciclo de vida en `Estado:` de la spec. `MEMORY.md` solo resume; actualízalo al cerrar una fase.
+- Decisión tomada al implementar que no está en el plan → entrada en `docs/decisions.md` (y spec primero si cambia el QUÉ).
