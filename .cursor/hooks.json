@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "hooks": {
+    "preToolUse": [
+      {
+        "command": ".cursor/hooks/guard-spec.sh",
+        "matcher": "Write"
+      }
+    ],
+    "postToolUse": [
+      {
+        "command": ".cursor/hooks/analyze-file.sh",
+        "matcher": "Write"
+      }
+    ],
+    "stop": [
+      {
+        "command": ".cursor/hooks/verify.sh",
+        "loop_limit": 3
+      }
+    ]
+  }
+}
