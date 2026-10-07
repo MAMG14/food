@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+    <!-- Leaf in the Android 12 safe circle (~160dp). -->
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:pathData="M120,52 C164,68 176,116 120,184 C64,116 76,68 120,52 Z" />
+</vector>

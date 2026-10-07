@@ -1,0 +1,14 @@
+---
+description: Normas globales del proyecto Food (SDD, constitución, Flutter)
+alwaysApply: true
+---
+
+# Food — reglas globales
+
+- Lee `docs/constitution.md`, `AGENTS.md` y `MEMORY.md` antes de cambiar comportamiento de producto.
+- **La spec manda**: no implementes nada que no esté en la spec activa bajo `specs/`.
+- Si falta una decisión: para y pregunta. No asumas backends, login, recordatorios ni marca definitiva.
+- Código/identificadores en **inglés**; UI y docs de producto en **español**.
+- Tests de lógica de dominio: `flutter test` debe quedar en verde antes de cerrar una tarea.
+- No commits salvo que el usuario lo pida.
+- Al cerrar una fase SDD, actualiza `MEMORY.md`.

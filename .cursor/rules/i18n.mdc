@@ -1,0 +1,13 @@
+---
+description: Internacionalización — strings de UI vía i18n
+globs: "lib/**/*.dart"
+alwaysApply: false
+---
+
+# i18n
+
+- Ningún texto visible al usuario hardcodeado en widgets (salvo claves de desarrollo temporales prohibidas en merge a producto).
+- Añadir cadenas en los archivos de localización del proyecto (ARB / gen-l10n según el plan).
+- Locale activo del MVP: `es`.
+- Claves en inglés (`itemName`, `expiryDate`, …); valores en español en `es`.
+- Unidades y categorías: valores de dominio estables en código; **etiquetas** traducibles.

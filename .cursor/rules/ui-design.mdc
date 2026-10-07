@@ -1,0 +1,12 @@
+---
+description: Lenguaje visual Food v1 al editar UI
+globs: "lib/ui/**/*.dart,lib/app.dart"
+alwaysApply: false
+---
+
+# UI Food v1
+
+- Leer skill del proyecto `ui-design` y la spec activa `specs/002-*` si existe.
+- Tema Material 3, seed teal; urgencia de caducidad con semáforo ligero (spec 002).
+- Textos visibles → l10n. Lógica de días/urgencia → dominio puro + tests.
+- No cambiar comportamiento de spec 001 salvo lo explícito en la spec de UI.

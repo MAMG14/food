@@ -1,0 +1,20 @@
+---
+description: Fechas de caducidad — precisión día/mes y zona local
+globs: "**/*.{dart}"
+alwaysApply: false
+---
+
+# Fechas de caducidad
+
+- Sin hora. Zona local del dispositivo.
+- Precisión `day` → valor `YYYY-MM-DD`.
+- Precisión `month` → valor `YYYY-MM`; fecha efectiva de caducidad = **último día de ese mes**.
+- La lógica de “¿caducado?”, ordenación y filtros recibe `today` (Date local, solo día) como parámetro — funciones puras.
+- Nunca uses `DateTime.parse('YYYY-MM-DD')` asumiendo UTC para lógica de negocio; construye fecha local.
+- No uses `toUtc()` / instantes para comparar días de caducidad.
+
+## Checklist
+
+- [ ] ¿Hoy y caducidad comparados en calendario local?
+- [ ] ¿Mes-only convertido al último día del mes?
+- [ ] ¿Orden por caducidad usa la fecha efectiva?

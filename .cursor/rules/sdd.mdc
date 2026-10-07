@@ -1,0 +1,14 @@
+---
+description: Flujo SDD — no implementar sin spec/plan/tareas aprobados
+globs: "specs/**/*"
+alwaysApply: false
+---
+
+# Spec-Driven Development
+
+- Spec = QUÉ/POR QUÉ. Sin stack ni rutas de archivos.
+- Plan/tareas = CÓMO. Ahí sí hay archivos y tests.
+- Requisitos en **EARS** (español), verificables.
+- Estados de spec: `borrador` → `aprobada` → `implementada`.
+- Cambio de requisito: actualizar spec primero; luego plan/tareas; luego código.
+- Skill del proyecto: `sdd` (`.cursor/skills/sdd/SKILL.md`).
