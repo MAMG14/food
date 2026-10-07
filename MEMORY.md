@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec 003: verificación en dispositivo de las tareas abiertas en `specs/003-recordatorios/tasks.md`; luego pasar la spec a implementada.
+- Spec 003: ejecutar `integration_test/real_gateway_test.dart` con el permiso concedido y verificar en dispositivo lo que queda en `specs/003-recordatorios/tasks.md`; luego pasar la spec a implementada.
 - Después: feedback del usuario o nueva spec (candidatas: marca/logo definitivo).

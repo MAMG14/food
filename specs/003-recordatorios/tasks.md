@@ -2,7 +2,7 @@
 
 Estado: aprobado — código completo; pendiente verificación manual en dispositivo (T5, T7–T10)
 
-Implementar **una tarea por vez**. Tests de lógica primero (en rojo), luego código, `flutter test` en verde, marcar y parar.
+Implementar por bloques (skill `sdd`): tareas en orden, tests de lógica primero, `flutter test` en verde, marcar y commit; parar solo en puntos de control.
 
 - [x] **T1. Modelo de configuración + `effectiveLeadDays` + tests.** RF-2–4, valores por defecto
   - Hecho cuando: `flutter test test/domain/reminders_test.dart` en verde para general, propia, sin aviso, global apagado y defaults.
@@ -20,14 +20,14 @@ Implementar **una tarea por vez**. Tests de lógica primero (en rojo), luego có
 
 - [ ] **T5. Gateway de notificaciones + zona horaria.** RF-14, RF-19
   - Hecho cuando: existe la interfaz y su implementación real; al arrancar se fija la zona local; un aviso de prueba programado a +1 min llega en Android (verificación manual, el código de prueba no se queda).
-  - Código hecho. Falta: comprobar en dispositivo con la demo manual (hora de aviso a +2 min).
+  - Código hecho. Test de integración `integration_test/real_gateway_test.dart` (avisos pendientes reales: agrupar, borrar, apagar). Falta: ejecutarlo con el permiso concedido (en iOS hay que pulsar «Permitir» una vez; `simctl` no lo concede) y comprobar en dispositivo que el aviso llega (hora de aviso a +2 min).
 
 - [x] **T6. `ReminderScheduler.resync` + textos i18n + tests.** RF-7, RF-14, RF-15
   - Hecho cuando: test con gateway falso verifica cancelar todo + programar los slots esperados con texto singular («X caduca mañana») y plural («N artículos por caducar»); el test también corre con `en` y obtiene los textos en inglés (sin idioma fijo en el scheduler).
 
 - [ ] **T7. Cableado: resync al arrancar y tras crear/editar/borrar.** RF-8–10, RF-19
   - Hecho cuando: en dispositivo, crear/editar/borrar un artículo cambia los avisos pendientes; abrir la app los recalcula.
-  - Código hecho (también al volver de segundo plano). Falta: prueba en dispositivo.
+  - Código hecho (también al volver de segundo plano). `integration_test/app_flow_test.dart` en verde en simulador iOS (crear artículo → aviso). Falta: prueba en dispositivo de editar/borrar y reabrir la app.
 
 - [ ] **T8. Pantalla de ajustes de recordatorios.** RF-1–5, RF-7, RF-18
   - Hecho cuando: desde el inventario se abren los ajustes; switch, antelación general, hora y regla por categoría se guardan, sobreviven a reiniciar la app y relanzan `resync`; con permiso denegado aparece el banner.
@@ -35,7 +35,7 @@ Implementar **una tarea por vez**. Tests de lógica primero (en rojo), luego có
 
 - [ ] **T9. Permiso al primer arranque + tap → inventario Activos.** RF-16–18
   - Hecho cuando: instalación limpia pide el permiso una sola vez; tocar el aviso (app cerrada, en segundo plano y abierta en el formulario) lleva a Activos.
-  - Código hecho. Falta: prueba en dispositivo.
+  - Código hecho. `integration_test/app_flow_test.dart` en verde en simulador iOS (permiso una sola vez; tap con el formulario abierto en Caducados → Activos). Falta: tap real con la app cerrada y en segundo plano.
 
 - [ ] **T10. Cierre.** Criterios de finalización
   - Hecho cuando: demo manual en Android e iOS (individual, agrupado, editar/borrar, reinicio del teléfono); `flutter analyze` sin errores; `flutter test` en verde; spec → implementada; `MEMORY.md` actualizado.
