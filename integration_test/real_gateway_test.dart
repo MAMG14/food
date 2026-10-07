@@ -51,9 +51,19 @@ void main() {
     );
     await gateway.init();
     // iOS refuses to schedule without authorization and simctl cannot grant
-    // it: allow the system dialog once per simulator/device.
-    if (!await gateway.areEnabled() && !await gateway.requestPermission()) {
-      fail('Food no tiene permiso de notificaciones: concédelo y repite.');
+    // it: allow the system dialog once and run with --no-uninstall so the
+    // grant survives the next run.
+    if (!await gateway.areEnabled()) {
+      final granted = await gateway.requestPermission().timeout(
+        const Duration(minutes: 2),
+        onTimeout: () => false,
+      );
+      if (!granted) {
+        fail(
+          'Food no tiene permiso de notificaciones: pulsa «Permitir» en el '
+          'diálogo (o actívalo en Ajustes) y repite con --no-uninstall.',
+        );
+      }
     }
     await gateway.cancelAll();
     scheduler = ReminderScheduler(
