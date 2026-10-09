@@ -39,8 +39,21 @@ description: >-
 - Guardar: `FilledButton` a ancho completo al final (o barra inferior estable).
 - Errores en el campo; no SnackBars como único feedback de validación.
 
+## Ciclo visual (obligatorio en cambios de UI)
+
+No diseñar a ciegas: cada cambio visible se mira en pantalla antes de darlo por bueno.
+
+1. Arrancar la app en el simulador iOS con el MCP `dart` (`launch_app`, o `flutter run` si no está disponible).
+2. Tras cada cambio: `hot_reload` (MCP) y captura con `tool/screenshot.sh <nombre>`. La captura queda en `build/screens/` (no versionado).
+3. Leer la captura y criticarla contra las referencias y esta skill: jerarquía, espaciado, alineación, contraste, texto cortado, aspecto genérico.
+4. Usar el inspector de widgets del MCP (`widget_inspector`) para medir, en vez de suponer, cuando algo se ve desalineado.
+5. Revisar también a ~360 dp de ancho y con texto grande.
+
+Referencias visuales del usuario (capturas de apps que le gustan): `docs/design/referencias/`. Si existen, mandan sobre los gustos del agente; citar cuál se sigue en cada decisión.
+
 ## Checklist antes de cerrar un cambio UI
 
+- [ ] ¿Revisado con captura real del simulador (no solo tests)?
 - [ ] ¿Funciona en pantalla estrecha (~360 dp)?
 - [ ] ¿Textos vía l10n?
 - [ ] ¿Urgencia alineada a la spec 002 (o la activa)?

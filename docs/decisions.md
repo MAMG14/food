@@ -34,3 +34,14 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
   6. Implementación por bloques hasta la siguiente verificación manual o decisión del usuario.
   7. Este registro de decisiones.
 - **Descartado:** cambiar de metodología (la base SDD funciona); hooks que ejecuten `flutter test` en cada edición (≈30 s por edición).
+
+## D-004 — Ciclo visual para la UI: MCP de Dart y capturas del simulador
+
+- Fecha: 2026-10-08 · Estado: vigente · Aprobado por el usuario
+- **Contexto:** la UI se veía genérica (“parece IA”). El agente escribía widgets sin ver el resultado; los tests validan comportamiento, no aspecto.
+- **Decisión:** herramienta de proceso, no de producto (no requiere spec):
+  1. MCP oficial `dart mcp-server` en `.cursor/mcp.json` (lanzar app, hot reload, inspector de widgets, errores en tiempo de ejecución).
+  2. `tool/screenshot.sh` para capturar el simulador iOS o un dispositivo Android en `build/screens/`.
+  3. La skill `ui-design` exige mirar capturas reales en cada cambio visible y seguir las referencias del usuario en `docs/design/referencias/`.
+- **Descartado por ahora:** Figma + su MCP (requiere diseños en Figma; se reconsidera si hace falta más control); golden tests (útiles cuando haya un diseño estable que proteger).
+- **Consecuencias:** el rediseño en sí sí es producto → irá en una spec propia (“diseño v2”) basada en las referencias.
