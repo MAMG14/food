@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food/domain/models/food_item.dart';
 import 'package:food/domain/urgency.dart';
@@ -41,6 +43,24 @@ class FoodItemTile extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(12, 12, 12, 12),
                   child: Row(
                     children: [
+                      if (item.imagePath != null &&
+                          item.imagePath!.isNotEmpty) ...[
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: Image.file(
+                            File(item.imagePath!),
+                            width: 48,
+                            height: 48,
+                            fit: BoxFit.cover,
+                            errorBuilder: (_, _, _) => const SizedBox(
+                              width: 48,
+                              height: 48,
+                              child: Icon(Icons.inventory_2_outlined),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 12),
+                      ],
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,

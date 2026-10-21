@@ -595,6 +595,66 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Turn on in settings'**
   String get reminderOpenSettings;
+
+  /// No description provided for @scanTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Scan product'**
+  String get scanTitle;
+
+  /// No description provided for @scanRegisterManual.
+  ///
+  /// In en, this message translates to:
+  /// **'Register manually'**
+  String get scanRegisterManual;
+
+  /// No description provided for @scanLookingUp.
+  ///
+  /// In en, this message translates to:
+  /// **'Looking up product…'**
+  String get scanLookingUp;
+
+  /// No description provided for @scanCameraDeniedTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera access needed'**
+  String get scanCameraDeniedTitle;
+
+  /// No description provided for @scanCameraDeniedBody.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable camera permission or register the product manually.'**
+  String get scanCameraDeniedBody;
+
+  /// No description provided for @scanNotFound.
+  ///
+  /// In en, this message translates to:
+  /// **'We couldn\'t find that barcode in Open Food Facts. You can register it manually.'**
+  String get scanNotFound;
+
+  /// No description provided for @scanNetworkError.
+  ///
+  /// In en, this message translates to:
+  /// **'No connection or the service is unavailable. You can register it manually.'**
+  String get scanNetworkError;
+
+  /// No description provided for @scanConfirmTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Confirm product'**
+  String get scanConfirmTitle;
+
+  /// No description provided for @scanOffAttribution.
+  ///
+  /// In en, this message translates to:
+  /// **'Product data: Open Food Facts'**
+  String get scanOffAttribution;
+
+  /// No description provided for @scanSave.
+  ///
+  /// In en, this message translates to:
+  /// **'Save to inventory'**
+  String get scanSave;
 }
 
 class _AppLocalizationsDelegate

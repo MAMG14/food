@@ -6,7 +6,7 @@ import 'package:food/domain/home_filter.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:food/ui/home/inventory_page.dart';
-import 'package:food/ui/item/food_item_form_page.dart';
+import 'package:food/ui/scan/barcode_scan_page.dart';
 
 /// Bottom navigation: Home + Add (spec 004).
 class HomeShell extends StatefulWidget {
@@ -35,7 +35,10 @@ class _HomeShellState extends State<HomeShell> {
     setState(() => _tabIndex = 1);
     final changed = await Navigator.of(context).push<bool>(
       MaterialPageRoute(
-        builder: (_) => FoodItemFormPage(repository: widget.repository),
+        builder: (_) => BarcodeScanPage(
+          repository: widget.repository,
+          reminders: widget.reminders,
+        ),
       ),
     );
     if (!mounted) return;

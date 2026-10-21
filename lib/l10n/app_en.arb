@@ -108,5 +108,15 @@
   },
   "reminderRuleOff": "No reminder",
   "reminderPermissionDenied": "Notifications are turned off for Alacena Bunker, so reminders won't arrive.",
-  "reminderOpenSettings": "Turn on in settings"
+  "reminderOpenSettings": "Turn on in settings",
+  "scanTitle": "Scan product",
+  "scanRegisterManual": "Register manually",
+  "scanLookingUp": "Looking up product…",
+  "scanCameraDeniedTitle": "Camera access needed",
+  "scanCameraDeniedBody": "Enable camera permission or register the product manually.",
+  "scanNotFound": "We couldn't find that barcode in Open Food Facts. You can register it manually.",
+  "scanNetworkError": "No connection or the service is unavailable. You can register it manually.",
+  "scanConfirmTitle": "Confirm product",
+  "scanOffAttribution": "Product data: Open Food Facts",
+  "scanSave": "Save to inventory"
 }

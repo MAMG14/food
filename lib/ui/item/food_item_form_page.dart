@@ -232,6 +232,9 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
       category: _category,
       notes: notes.isEmpty ? null : notes,
       location: _location,
+      // Keep scan metadata on edit (spec 005 RF-19).
+      barcode: widget.item?.barcode,
+      imagePath: widget.item?.imagePath,
     );
 
     if (_isEditing) {

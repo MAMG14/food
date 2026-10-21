@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec **005** (plan aprobado): T1–T4 hechas (mapeo, schema v3, cliente OFF, fotos); siguen T5–T10 (escáner UI + ARB).
+- Spec **005**: T1–T9 hechas; falta **T10** verificación manual en dispositivo (escaneo OFF, sin red, manual, cámara).
 - Spec 003: verificación manual restante aplazada.

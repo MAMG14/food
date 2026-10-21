@@ -286,4 +286,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminderOpenSettings => 'Turn on in settings';
+
+  @override
+  String get scanTitle => 'Scan product';
+
+  @override
+  String get scanRegisterManual => 'Register manually';
+
+  @override
+  String get scanLookingUp => 'Looking up product…';
+
+  @override
+  String get scanCameraDeniedTitle => 'Camera access needed';
+
+  @override
+  String get scanCameraDeniedBody =>
+      'Enable camera permission or register the product manually.';
+
+  @override
+  String get scanNotFound =>
+      'We couldn\'t find that barcode in Open Food Facts. You can register it manually.';
+
+  @override
+  String get scanNetworkError =>
+      'No connection or the service is unavailable. You can register it manually.';
+
+  @override
+  String get scanConfirmTitle => 'Confirm product';
+
+  @override
+  String get scanOffAttribution => 'Product data: Open Food Facts';
+
+  @override
+  String get scanSave => 'Save to inventory';
 }

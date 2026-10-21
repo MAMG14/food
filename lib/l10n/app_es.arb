@@ -87,5 +87,15 @@
   "reminderRuleGeneral": "Como la general ({lead})",
   "reminderRuleOff": "Sin aviso",
   "reminderPermissionDenied": "Las notificaciones de Alacena Bunker están desactivadas, así que los avisos no llegarán.",
-  "reminderOpenSettings": "Activar en ajustes"
+  "reminderOpenSettings": "Activar en ajustes",
+  "scanTitle": "Escanear producto",
+  "scanRegisterManual": "Registrar manual",
+  "scanLookingUp": "Buscando producto…",
+  "scanCameraDeniedTitle": "Sin acceso a la cámara",
+  "scanCameraDeniedBody": "Activa el permiso de cámara o registra el producto a mano.",
+  "scanNotFound": "No encontramos ese código en Open Food Facts. Puedes registrarlo a mano.",
+  "scanNetworkError": "No hay conexión o el servicio no responde. Puedes registrarlo a mano.",
+  "scanConfirmTitle": "Confirmar producto",
+  "scanOffAttribution": "Datos de producto: Open Food Facts",
+  "scanSave": "Guardar en inventario"
 }

@@ -289,4 +289,37 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reminderOpenSettings => 'Activar en ajustes';
+
+  @override
+  String get scanTitle => 'Escanear producto';
+
+  @override
+  String get scanRegisterManual => 'Registrar manual';
+
+  @override
+  String get scanLookingUp => 'Buscando producto…';
+
+  @override
+  String get scanCameraDeniedTitle => 'Sin acceso a la cámara';
+
+  @override
+  String get scanCameraDeniedBody =>
+      'Activa el permiso de cámara o registra el producto a mano.';
+
+  @override
+  String get scanNotFound =>
+      'No encontramos ese código en Open Food Facts. Puedes registrarlo a mano.';
+
+  @override
+  String get scanNetworkError =>
+      'No hay conexión o el servicio no responde. Puedes registrarlo a mano.';
+
+  @override
+  String get scanConfirmTitle => 'Confirmar producto';
+
+  @override
+  String get scanOffAttribution => 'Datos de producto: Open Food Facts';
+
+  @override
+  String get scanSave => 'Guardar en inventario';
 }
