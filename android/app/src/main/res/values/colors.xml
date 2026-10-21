@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="splash_background">#FF2E7D4F</color>
+    <!-- Matches Flutter splash canvas so the Lottie (green mark) is visible. -->
+    <color name="splash_background">#FFFFFFFF</color>
 </resources>

@@ -9,10 +9,10 @@ const kSplashLottieAsset = 'assets/lottie/alacena_bunker_splash.json';
 /// Natural Lottie length (~1.5 s at 30 fps).
 const kSplashDuration = Duration(milliseconds: 1500);
 
-/// Hard cap if the animation never reports completion.
-const kSplashFallbackMax = Duration(seconds: 2);
+/// Hard cap if load/play never completes.
+const kSplashFallbackMax = Duration(seconds: 3);
 
-/// Brand splash: always the Lottie, then fade into [child].
+/// Brand splash: plays the Lottie once, then fades into [child].
 class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
@@ -29,11 +29,10 @@ class SplashGate extends StatefulWidget {
   State<SplashGate> createState() => _SplashGateState();
 }
 
-class _SplashGateState extends State<SplashGate>
-    with SingleTickerProviderStateMixin {
+class _SplashGateState extends State<SplashGate> {
   bool _showSplash = true;
   bool _completed = false;
-  AnimationController? _lottieController;
+  LottieComposition? _composition;
 
   @override
   void initState() {
@@ -42,32 +41,27 @@ class _SplashGateState extends State<SplashGate>
       _showSplash = false;
       return;
     }
-    _lottieController = AnimationController(vsync: this);
-    Future<void>.delayed(kSplashFallbackMax, () {
+    _load();
+    Future<void>.delayed(kSplashFallbackMax, _finish);
+  }
+
+  Future<void> _load() async {
+    try {
+      final composition = await AssetLottie(kSplashLottieAsset).load();
       if (!mounted || _completed) return;
+      setState(() => _composition = composition);
+      await Future<void>.delayed(composition.duration);
       _finish();
-    });
+    } catch (e, st) {
+      debugPrint('Splash Lottie failed: $e\n$st');
+      _finish();
+    }
   }
 
   void _finish() {
     if (_completed || !mounted) return;
     _completed = true;
-    _lottieController?.stop();
     setState(() => _showSplash = false);
-  }
-
-  void _onLottieLoaded(LottieComposition composition) {
-    final controller = _lottieController;
-    if (controller == null) return;
-    controller
-      ..duration = composition.duration
-      ..forward().whenComplete(_finish);
-  }
-
-  @override
-  void dispose() {
-    _lottieController?.dispose();
-    super.dispose();
   }
 
   @override
@@ -79,9 +73,7 @@ class _SplashGateState extends State<SplashGate>
       child: _showSplash
           ? SplashView(
               key: const ValueKey('splash'),
-              controller: _lottieController,
-              onLoaded: _onLottieLoaded,
-              onFailed: _finish,
+              composition: _composition,
             )
           : KeyedSubtree(key: const ValueKey('home'), child: widget.child),
     );
@@ -89,46 +81,37 @@ class _SplashGateState extends State<SplashGate>
 }
 
 class SplashView extends StatelessWidget {
-  const SplashView({
-    super.key,
-    this.controller,
-    this.onLoaded,
-    this.onFailed,
-  });
+  const SplashView({super.key, this.composition});
 
-  final AnimationController? controller;
-  final void Function(LottieComposition composition)? onLoaded;
-  final VoidCallback? onFailed;
+  final LottieComposition? composition;
 
   @override
   Widget build(BuildContext context) {
+    // White canvas: the mark is green; a green scaffold hid the animation.
+    const bg = Colors.white;
+
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
+      value: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Colors.transparent,
-        systemNavigationBarColor: foodSeedColor,
-        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarColor: bg,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
-        backgroundColor: foodSeedColor,
-        body: SafeArea(
-          child: Center(
-            child: controller == null
-                ? const SizedBox.shrink()
-                : Lottie.asset(
-                    kSplashLottieAsset,
-                    controller: controller,
-                    width: 240,
-                    height: 240,
-                    fit: BoxFit.contain,
-                    onLoaded: onLoaded,
-                    errorBuilder: (context, error, stackTrace) {
-                      WidgetsBinding.instance.addPostFrameCallback((_) {
-                        onFailed?.call();
-                      });
-                      return const SizedBox.shrink();
-                    },
-                  ),
-          ),
+        backgroundColor: bg,
+        body: Center(
+          child: composition == null
+              ? SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: CircularProgressIndicator(color: foodSeedColor),
+                )
+              : Lottie(
+                  composition: composition,
+                  width: 280,
+                  height: 280,
+                  fit: BoxFit.contain,
+                  repeat: false,
+                ),
         ),
       ),
     );

@@ -16,7 +16,7 @@ class OnboardingPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: foodSeedColor,
+      backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -25,8 +25,8 @@ class OnboardingPage extends StatelessWidget {
               const Spacer(flex: 2),
               Lottie.asset(
                 kSplashLottieAsset,
-                width: 180,
-                height: 180,
+                width: 200,
+                height: 200,
                 fit: BoxFit.contain,
                 repeat: false,
               ),
@@ -35,7 +35,7 @@ class OnboardingPage extends StatelessWidget {
                 l10n.onboardingWelcome,
                 textAlign: TextAlign.center,
                 style: textTheme.headlineMedium?.copyWith(
-                  color: Colors.white,
+                  color: foodSeedColor,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -45,8 +45,8 @@ class OnboardingPage extends StatelessWidget {
                 child: FilledButton(
                   onPressed: onFinished,
                   style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: foodSeedColor,
+                    backgroundColor: foodSeedColor,
+                    foregroundColor: Colors.white,
                     minimumSize: const Size.fromHeight(53),
                   ),
                   child: Text(l10n.onboardingStart),
@@ -57,7 +57,7 @@ class OnboardingPage extends StatelessWidget {
                 l10n.onboardingTagline,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.85),
+                  color: foodSeedColor.withValues(alpha: 0.85),
                 ),
               ),
               const SizedBox(height: 32),
