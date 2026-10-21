@@ -87,23 +87,23 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // White canvas: the mark is green; a green scaffold hid the animation.
-    const bg = Colors.white;
+    // Figma splash frame 1: brand green canvas behind the Lottie.
+    const bg = foodSeedColor;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark.copyWith(
+      value: SystemUiOverlayStyle.light.copyWith(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: bg,
-        systemNavigationBarIconBrightness: Brightness.dark,
+        systemNavigationBarIconBrightness: Brightness.light,
       ),
       child: Scaffold(
         backgroundColor: bg,
         body: Center(
           child: composition == null
-              ? SizedBox(
+              ? const SizedBox(
                   width: 48,
                   height: 48,
-                  child: CircularProgressIndicator(color: foodSeedColor),
+                  child: CircularProgressIndicator(color: Colors.white),
                 )
               : Lottie(
                   composition: composition,

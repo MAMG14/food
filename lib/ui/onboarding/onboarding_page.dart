@@ -4,7 +4,7 @@ import 'package:food/ui/splash/splash_gate.dart';
 import 'package:food/ui/theme/food_theme.dart';
 import 'package:lottie/lottie.dart';
 
-/// First-run welcome screen (spec 004).
+/// First-run welcome screen (spec 004) — Figma green canvas.
 class OnboardingPage extends StatelessWidget {
   const OnboardingPage({super.key, required this.onFinished});
 
@@ -16,7 +16,7 @@ class OnboardingPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: foodSeedColor,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 32),
@@ -35,7 +35,7 @@ class OnboardingPage extends StatelessWidget {
                 l10n.onboardingWelcome,
                 textAlign: TextAlign.center,
                 style: textTheme.headlineMedium?.copyWith(
-                  color: foodSeedColor,
+                  color: Colors.white,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -45,8 +45,8 @@ class OnboardingPage extends StatelessWidget {
                 child: FilledButton(
                   onPressed: onFinished,
                   style: FilledButton.styleFrom(
-                    backgroundColor: foodSeedColor,
-                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.white,
+                    foregroundColor: foodSeedColor,
                     minimumSize: const Size.fromHeight(53),
                   ),
                   child: Text(l10n.onboardingStart),
@@ -57,7 +57,7 @@ class OnboardingPage extends StatelessWidget {
                 l10n.onboardingTagline,
                 textAlign: TextAlign.center,
                 style: textTheme.bodyLarge?.copyWith(
-                  color: foodSeedColor.withValues(alpha: 0.85),
+                  color: Colors.white.withValues(alpha: 0.85),
                 ),
               ),
               const SizedBox(height: 32),
