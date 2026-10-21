@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:food/data/app_preferences.dart';
@@ -117,9 +118,55 @@ class _FoodAppState extends State<FoodApp> {
         GlobalCupertinoLocalizations.delegate,
       ],
       theme: buildFoodTheme(),
+      // Default banner draws under the status bar in edge-to-edge; shift ours.
+      debugShowCheckedModeBanner: false,
+      builder: (context, child) => _DebugBannerBelowStatusBar(
+        child: child ?? const SizedBox.shrink(),
+      ),
       home: widget.splashDuration == Duration.zero
           ? afterSplash
           : SplashGate(duration: widget.splashDuration, child: afterSplash),
+    );
+  }
+}
+
+/// DEBUG ribbon just below the status bar (edge-to-edge safe).
+class _DebugBannerBelowStatusBar extends StatelessWidget {
+  const _DebugBannerBelowStatusBar({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    if (!kDebugMode) return child;
+    final top = MediaQuery.viewPaddingOf(context).top;
+    return Stack(
+      fit: StackFit.expand,
+      children: [
+        child,
+        Positioned(
+          top: top,
+          right: 0,
+          child: IgnorePointer(
+            child: SizedBox(
+              width: 40,
+              height: 40,
+              child: Banner(
+                message: 'DEBUG',
+                location: BannerLocation.topEnd,
+                color: const Color(0xA0B71C1C),
+                textStyle: const TextStyle(
+                  color: Color(0xFFFFFFFF),
+                  fontSize: 10,
+                  fontWeight: FontWeight.w900,
+                  height: 1.0,
+                ),
+                child: const SizedBox.expand(),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

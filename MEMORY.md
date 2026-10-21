@@ -6,7 +6,7 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 - Inventario local con caducidad (spec 001).
 - Recordatorios locales configurables (spec 003).
-- UI **Alacena Bunker** (spec 004): marca, Lottie splash, onboarding 1ª vez, Home con tarjetas Óptimo / Por caducar / Caducado, tabs Home/Añadir.
+- UI **Alacena Bunker** (spec 004, implementada): marca, Lottie splash, onboarding 1ª vez, Home con tarjetas Óptimo / Por caducar / Caducado, tabs Home/Añadir, edge-to-edge (D-005).
 - Fuera por ahora: nube, login, espacios casa/negocio, cambio de `applicationId`.
 
 ## Dónde mirar
@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec 004 **T10**: punto de control — probar en simulador/dispositivo (splash Lottie, onboarding limpio, Home/filtros/Añadir, ajustes, upgrade sin onboarding). Tras OK del usuario → `Estado: implementada`.
-- Spec 003: verificación manual restante aplazada.
+- Spec 003: verificación manual restante aplazada (permisos / avisos en dispositivo).
+- Sin spec activa de producto; siguiente cambio → nueva spec bajo `specs/`.

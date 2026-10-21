@@ -5,14 +5,28 @@ import 'package:food/domain/urgency.dart';
 /// Brand seed (Alacena Bunker) for in-app chrome.
 const foodSeedColor = Color(0xFF2E7D4F);
 
-/// Status / nav bar for light screens (opaque so icons stay readable).
+/// Edge-to-edge chrome (targetSdk 36): bar *colors* are ignored on Android 15+;
+/// paint the app behind the bars and keep icons dark on light surfaces.
 const appSystemOverlayStyle = SystemUiOverlayStyle(
-  statusBarColor: Color(0xFFF7F9F7),
+  statusBarColor: Colors.transparent,
   statusBarIconBrightness: Brightness.dark,
   statusBarBrightness: Brightness.light,
-  systemNavigationBarColor: Colors.white,
+  systemNavigationBarColor: Colors.transparent,
   systemNavigationBarIconBrightness: Brightness.dark,
   systemNavigationBarDividerColor: Colors.transparent,
+  systemStatusBarContrastEnforced: false,
+  systemNavigationBarContrastEnforced: false,
+);
+
+/// Splash: same transparent bars; cream canvas paints behind them.
+const splashSystemOverlayStyle = SystemUiOverlayStyle(
+  statusBarColor: Colors.transparent,
+  statusBarIconBrightness: Brightness.dark,
+  statusBarBrightness: Brightness.light,
+  systemNavigationBarColor: Colors.transparent,
+  systemNavigationBarIconBrightness: Brightness.dark,
+  systemStatusBarContrastEnforced: false,
+  systemNavigationBarContrastEnforced: false,
 );
 
 /// Splash / onboarding canvas from Figma (cream).

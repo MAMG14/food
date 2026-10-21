@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/ui/splash/splash_gate.dart';
 import 'package:food/ui/theme/food_theme.dart';
@@ -10,58 +11,71 @@ class OnboardingPage extends StatelessWidget {
 
   final VoidCallback onFinished;
 
+  static const _overlay = SystemUiOverlayStyle(
+    statusBarColor: Colors.transparent,
+    statusBarIconBrightness: Brightness.light,
+    statusBarBrightness: Brightness.dark,
+    systemNavigationBarColor: Colors.transparent,
+    systemNavigationBarIconBrightness: Brightness.light,
+    systemStatusBarContrastEnforced: false,
+    systemNavigationBarContrastEnforced: false,
+  );
+
   @override
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     final textTheme = Theme.of(context).textTheme;
 
-    return Scaffold(
-      backgroundColor: foodSeedColor,
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32),
-          child: Column(
-            children: [
-              const Spacer(flex: 2),
-              Lottie.asset(
-                kSplashLottieAsset,
-                width: 200,
-                height: 200,
-                fit: BoxFit.contain,
-                repeat: false,
-              ),
-              const SizedBox(height: 32),
-              Text(
-                l10n.onboardingWelcome,
-                textAlign: TextAlign.center,
-                style: textTheme.headlineMedium?.copyWith(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w600,
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: _overlay,
+      child: Scaffold(
+        backgroundColor: foodSeedColor,
+        body: SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32),
+            child: Column(
+              children: [
+                const Spacer(flex: 2),
+                Lottie.asset(
+                  kSplashLottieAsset,
+                  width: 200,
+                  height: 200,
+                  fit: BoxFit.contain,
+                  repeat: false,
                 ),
-              ),
-              const Spacer(flex: 2),
-              SizedBox(
-                width: double.infinity,
-                child: FilledButton(
-                  onPressed: onFinished,
-                  style: FilledButton.styleFrom(
-                    backgroundColor: Colors.white,
-                    foregroundColor: foodSeedColor,
-                    minimumSize: const Size.fromHeight(53),
+                const SizedBox(height: 32),
+                Text(
+                  l10n.onboardingWelcome,
+                  textAlign: TextAlign.center,
+                  style: textTheme.headlineMedium?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w600,
                   ),
-                  child: Text(l10n.onboardingStart),
                 ),
-              ),
-              const SizedBox(height: 24),
-              Text(
-                l10n.onboardingTagline,
-                textAlign: TextAlign.center,
-                style: textTheme.bodyLarge?.copyWith(
-                  color: Colors.white.withValues(alpha: 0.85),
+                const Spacer(flex: 2),
+                SizedBox(
+                  width: double.infinity,
+                  child: FilledButton(
+                    onPressed: onFinished,
+                    style: FilledButton.styleFrom(
+                      backgroundColor: Colors.white,
+                      foregroundColor: foodSeedColor,
+                      minimumSize: const Size.fromHeight(53),
+                    ),
+                    child: Text(l10n.onboardingStart),
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-            ],
+                const SizedBox(height: 24),
+                Text(
+                  l10n.onboardingTagline,
+                  textAlign: TextAlign.center,
+                  style: textTheme.bodyLarge?.copyWith(
+                    color: Colors.white.withValues(alpha: 0.85),
+                  ),
+                ),
+                const SizedBox(height: 32),
+              ],
+            ),
           ),
         ),
       ),

@@ -2,9 +2,17 @@
 <resources>
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
-    <!-- Same launch image while Flutter boots (no white flash / layout jump). -->
+    <!-- After Flutter boots: solid cream so any gap behind system bars is not black. -->
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">@drawable/launch_background</item>
+        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 </resources>

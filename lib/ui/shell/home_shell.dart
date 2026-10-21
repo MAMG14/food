@@ -1,14 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/domain/home_filter.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:food/ui/home/inventory_page.dart';
 import 'package:food/ui/item/food_item_form_page.dart';
-import 'package:food/ui/theme/food_theme.dart';
 
 /// Bottom navigation: Home + Add (spec 004).
 class HomeShell extends StatefulWidget {
@@ -52,37 +50,34 @@ class _HomeShellState extends State<HomeShell> {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
 
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: appSystemOverlayStyle,
-      child: Scaffold(
-        body: InventoryPage(
-          key: _inventoryKey,
-          repository: widget.repository,
-          reminders: widget.reminders,
-          reminderFilter: widget.reminderFilter,
-        ),
-        bottomNavigationBar: NavigationBar(
-          selectedIndex: _tabIndex,
-          onDestinationSelected: (index) {
-            if (index == 1) {
-              unawaited(_openAdd());
-              return;
-            }
-            setState(() => _tabIndex = 0);
-          },
-          destinations: [
-            NavigationDestination(
-              icon: const Icon(Icons.home_outlined),
-              selectedIcon: const Icon(Icons.home),
-              label: l10n.tabHome,
-            ),
-            NavigationDestination(
-              icon: const Icon(Icons.add_circle_outline),
-              selectedIcon: const Icon(Icons.add_circle),
-              label: l10n.navAdd,
-            ),
-          ],
-        ),
+    // Single Scaffold (inside InventoryPage) so AppBar paints behind the
+    // status bar and NavigationBar respects the nav inset under edge-to-edge.
+    return InventoryPage(
+      key: _inventoryKey,
+      repository: widget.repository,
+      reminders: widget.reminders,
+      reminderFilter: widget.reminderFilter,
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _tabIndex,
+        onDestinationSelected: (index) {
+          if (index == 1) {
+            unawaited(_openAdd());
+            return;
+          }
+          setState(() => _tabIndex = 0);
+        },
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined),
+            selectedIcon: const Icon(Icons.home),
+            label: l10n.tabHome,
+          ),
+          NavigationDestination(
+            icon: const Icon(Icons.add_circle_outline),
+            selectedIcon: const Icon(Icons.add_circle),
+            label: l10n.navAdd,
+          ),
+        ],
       ),
     );
   }

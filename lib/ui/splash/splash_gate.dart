@@ -65,7 +65,6 @@ class _SplashGateState extends State<SplashGate> {
   void _finish() {
     if (_completed || !mounted) return;
     _completed = true;
-    // Restore app chrome after splash AnnotatedRegion.
     SystemChrome.setSystemUIOverlayStyle(appSystemOverlayStyle);
     setState(() => _showSplash = false);
   }
@@ -108,13 +107,7 @@ class SplashView extends StatelessWidget {
     final iconRect = iconRectForFill(screen);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: splashCanvasColor,
-        statusBarIconBrightness: Brightness.dark,
-        statusBarBrightness: Brightness.light,
-        systemNavigationBarColor: splashCanvasColor,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
+      value: splashSystemOverlayStyle,
       child: ColoredBox(
         color: bg,
         child: Stack(

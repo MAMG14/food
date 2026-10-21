@@ -46,3 +46,11 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
 - **Descartado por ahora:** golden tests (útiles cuando haya un diseño estable que proteger).
 - **Actualización (2026-10-21):** MCP Figma remoto en `.cursor/mcp.json`. Spec 004 implementa UI Alacena Bunker (Lottie splash, onboarding, Home con filtros, tabs). Seed de tema `#2E7D4F`.
 - **Consecuencias:** la marca visible y el flujo de arranque pasan a 004; el `applicationId` sigue siendo `com.example.food` hasta otra spec.
+
+## D-005 — Edge-to-edge obligatorio (targetSdk 36)
+
+- Fecha: 2026-10-21 · Estado: vigente · Afecta: splash/Home chrome, `MainActivity`, tema
+- **Contexto:** tras el splash nativo Android 12, la barra de estado y el banner DEBUG se veían mal en Home. Se intentó optar por layout clásico (`SystemUiMode.manual` + `setDecorFitsSystemWindows(true)` + `statusBarColor` opaco). No cambió nada en dispositivo.
+- **Causa:** Flutter fija `targetSdkVersion = 36`. En API 36 el edge-to-edge es obligatorio (sin opt-out). `statusBarColor` / `systemNavigationBarColor` se ignoran. `SystemUiMode.manual` llama a `disableEdgeToEdge()` en el embedder y pelea con Android → franja negra detrás de la barra y DEBUG recortado. El splash se veía bien porque pinta crema a pantalla completa detrás de la barra transparente.
+- **Decisión:** abrazar edge-to-edge: barras transparentes, iconos oscuros, AppBar/canvas pintan detrás; un solo `Scaffold` en Home; banner DEBUG desplazado bajo el `viewPadding`; `NormalTheme.windowBackground` crema sólido. En `MainActivity`, forzar `WindowCompat.setDecorFitsSystemWindows(false)` + iconos claros de barra tras el splash (en Samsung/API 37 el embedder no siempre lo aplicaba a tiempo y quedaba una franja negra opaca encima del AppBar).
+- **Descartado:** bajar `targetSdk` (rompe el default de Flutter y políticas de Play a medio plazo); seguir forzando layout no edge-to-edge.

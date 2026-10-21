@@ -1,6 +1,6 @@
 # Tareas — Spec 004 UI Alacena Bunker
 
-Estado: aprobado
+Estado: implementado
 
 Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flutter test` en verde, marcar y commit `004/Tn: …`; parar solo en puntos de control.
 
@@ -31,6 +31,6 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T9. Formulario alineado a Figma (campos 001) + ARB de UI nueva.** RF-15, RF-18
   - Hecho cuando: alta/edición con layout Figma + campos restantes; validaciones 001; cadenas nuevas en ARB (marca, onboarding, tarjetas, empty).
 
-- [ ] **T10. Cierre visual + suite.** Criterios de finalización, RNF-5
+- [x] **T10. Cierre visual + suite.** Criterios de finalización, RNF-5
   - Hecho cuando: `flutter analyze` + `flutter test` en verde; capturas Home/Add/splash vs Figma; punto de control: 1ª instalación vs upgrade y tap → Por caducar; `MEMORY.md` actualizado; spec → `implementada` tras OK del usuario.
-  - Código/suite listos. Falta: verificación visual del usuario en dispositivo/simulador.
+  - Verificado en dispositivo (Samsung / Android 17): splash, Home, barra de estado edge-to-edge y DEBUG.

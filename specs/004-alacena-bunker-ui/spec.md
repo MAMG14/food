@@ -1,6 +1,6 @@
 # Spec 004 — UI Alacena Bunker (diseño Figma)
 
-Estado: aprobada
+Estado: implementada
 
 ## Contexto y objetivo
 

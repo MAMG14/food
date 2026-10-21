@@ -14,12 +14,10 @@ import 'package:food/ui/theme/food_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Prefer the classic (non edge-to-edge) layout so the status bar and DEBUG
-  // banner stay fully visible, as before the splash work.
-  await SystemChrome.setEnabledSystemUIMode(
-    SystemUiMode.manual,
-    overlays: SystemUiOverlay.values,
-  );
+  // targetSdk 36: edge-to-edge is mandatory. Do not use SystemUiMode.manual —
+  // it calls disableEdgeToEdge() and fights Android, leaving a black status
+  // strip and a clipped DEBUG banner on Home.
+  await SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
   SystemChrome.setSystemUIOverlayStyle(appSystemOverlayStyle);
   FoodDatabase.ensureInitialized();
 

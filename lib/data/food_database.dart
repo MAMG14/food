@@ -9,9 +9,9 @@ import 'package:sqflite/sqflite.dart';
 /// - v2: reminder settings + reminder log tables (spec 003).
 class FoodDatabase {
   FoodDatabase({
-    DatabaseFactory? databaseFactory,
+    this._databaseFactory,
     this.databasePath,
-  }) : _databaseFactory = databaseFactory;
+  });
 
   final DatabaseFactory? _databaseFactory;
 

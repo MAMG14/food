@@ -20,6 +20,7 @@ class InventoryPage extends StatefulWidget {
     required this.repository,
     required this.reminders,
     required this.reminderFilter,
+    this.bottomNavigationBar,
   });
 
   final FoodItemRepository repository;
@@ -27,6 +28,9 @@ class InventoryPage extends StatefulWidget {
 
   /// Reminder tap sets [HomeFilter.soon].
   final ValueNotifier<HomeFilter?> reminderFilter;
+
+  /// Owned by [HomeShell] so there is a single Scaffold (edge-to-edge insets).
+  final Widget? bottomNavigationBar;
 
   @override
   InventoryPageState createState() => InventoryPageState();
@@ -130,6 +134,7 @@ class InventoryPageState extends State<InventoryPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.appTitle),
+        systemOverlayStyle: appSystemOverlayStyle,
         actions: [
           IconButton(
             onPressed: _openReminderSettings,
@@ -157,6 +162,7 @@ class InventoryPageState extends State<InventoryPage> {
           ),
         ],
       ),
+      bottomNavigationBar: widget.bottomNavigationBar,
       body: Column(
         children: [
           Padding(
