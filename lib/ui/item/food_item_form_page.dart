@@ -1,23 +1,34 @@
+import 'dart:async';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:food/data/food_item_repository.dart';
+import 'package:food/data/product_image_store.dart';
 import 'package:food/domain/models/enums.dart';
 import 'package:food/domain/models/food_item.dart';
 import 'package:food/domain/validation.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/ui/format/expiry_format.dart';
+import 'package:food/ui/item/product_photo_preview.dart';
 import 'package:food/ui/l10n_labels.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FoodItemFormPage extends StatefulWidget {
   const FoodItemFormPage({
     super.key,
     required this.repository,
     this.item,
+    this.imageStore,
+    this.pickImage,
   });
 
   final FoodItemRepository repository;
   final FoodItem? item;
+  final ProductImageStore? imageStore;
+
+  /// Test seam: returns a local file path, or null if cancelled / denied.
+  final Future<String?> Function(ImageSource source)? pickImage;
 
   @override
   State<FoodItemFormPage> createState() => _FoodItemFormPageState();
@@ -27,6 +38,9 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
   late final TextEditingController _nameController;
   late final TextEditingController _quantityController;
   late final TextEditingController _notesController;
+  late final ProductImageStore _imageStore;
+  late final bool _ownsImageStore;
+  final _picker = ImagePicker();
 
   late ExpiryPrecision _precision;
   DateTime? _dayDate;
@@ -40,12 +54,46 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
   String? _expiryError;
   bool _saving = false;
 
+  /// Fresh row from DB (includes `imagePath` after async download).
+  FoodItem? _persisted;
+
+  /// Staging path chosen this session (camera/gallery).
+  String? _pendingImagePath;
+
+  /// User asked to clear the photo on save.
+  var _removeImage = false;
+
+  /// Decoded preview bytes ([MemoryImage] avoids FileImage hangs in tests).
+  Uint8List? _previewBytes;
+
   bool get _isEditing => widget.item != null;
+
+  String? get _displayImagePath {
+    if (_removeImage) return null;
+    return _pendingImagePath ?? _persisted?.imagePath ?? widget.item?.imagePath;
+  }
+
+  Future<void> _loadPreviewBytes(String? path) async {
+    if (path == null || path.isEmpty) {
+      if (mounted) setState(() => _previewBytes = null);
+      return;
+    }
+    try {
+      final bytes = await File(path).readAsBytes();
+      if (!mounted) return;
+      setState(() => _previewBytes = bytes);
+    } catch (_) {
+      if (mounted) setState(() => _previewBytes = null);
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    _ownsImageStore = widget.imageStore == null;
+    _imageStore = widget.imageStore ?? ProductImageStore();
     final item = widget.item;
+    _persisted = item;
     _nameController = TextEditingController(text: item?.name ?? '');
     _quantityController = TextEditingController(
       text: item != null ? _formatQuantity(item.quantity) : '1',
@@ -58,11 +106,30 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
 
     if (item != null) {
       _applyExpiryValue(item.expiryPrecision, item.expiryValue);
+      unawaited(_reloadPersisted());
+      unawaited(_loadPreviewBytes(item.imagePath));
     } else {
       final now = DateTime.now();
       _dayDate = DateTime(now.year, now.month, now.day);
       _monthDate = DateTime(now.year, now.month);
     }
+  }
+
+  Future<void> _reloadPersisted() async {
+    final id = widget.item?.id;
+    if (id == null) return;
+    final fresh = await widget.repository.getById(id);
+    if (!mounted || fresh == null) return;
+    setState(() => _persisted = fresh);
+    if (_pendingImagePath == null && !_removeImage) {
+      unawaited(_loadPreviewBytes(fresh.imagePath));
+    }
+  }
+
+  Future<void> _cleanupStaging() async {
+    final pending = _pendingImagePath;
+    _pendingImagePath = null;
+    await _imageStore.deleteIfExists(pending);
   }
 
   void _applyExpiryValue(ExpiryPrecision precision, String value) {
@@ -104,9 +171,13 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
 
   @override
   void dispose() {
+    unawaited(_cleanupStaging());
     _nameController.dispose();
     _quantityController.dispose();
     _notesController.dispose();
+    if (_ownsImageStore) {
+      _imageStore.close();
+    }
     super.dispose();
   }
 
@@ -191,6 +262,81 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
     }
   }
 
+  Future<String?> _defaultPick(ImageSource source) async {
+    final file = await _picker.pickImage(
+      source: source,
+      maxWidth: 1600,
+      maxHeight: 1600,
+      imageQuality: 85,
+    );
+    return file?.path;
+  }
+
+  Future<void> _choosePhotoSource({required bool replacing}) async {
+    final l10n = AppLocalizations.of(context);
+    final source = await showModalBottomSheet<ImageSource>(
+      context: context,
+      showDragHandle: true,
+      builder: (context) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_camera_outlined),
+              title: Text(l10n.productImageCamera),
+              onTap: () => Navigator.pop(context, ImageSource.camera),
+            ),
+            ListTile(
+              leading: const Icon(Icons.photo_library_outlined),
+              title: Text(l10n.productImageGallery),
+              onTap: () => Navigator.pop(context, ImageSource.gallery),
+            ),
+          ],
+        ),
+      ),
+    );
+    if (source == null || !mounted) return;
+
+    final pick = widget.pickImage ?? _defaultPick;
+    String? path;
+    try {
+      path = await pick(source);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.productImagePermissionDenied)),
+      );
+      return;
+    }
+    if (!mounted || path == null) return;
+
+    final previousPending = _pendingImagePath;
+    final staged = await _imageStore.stageFile(path);
+    if (!mounted) return;
+    if (staged == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(l10n.productImagePermissionDenied)),
+      );
+      return;
+    }
+
+    await _imageStore.deleteIfExists(previousPending);
+    setState(() {
+      _pendingImagePath = staged;
+      _removeImage = false;
+    });
+    unawaited(_loadPreviewBytes(staged));
+  }
+
+  void _removePhoto() {
+    unawaited(_cleanupStaging());
+    setState(() {
+      _removeImage = true;
+      _pendingImagePath = null;
+      _previewBytes = null;
+    });
+  }
+
   Future<void> _save() async {
     final l10n = AppLocalizations.of(context);
     final quantity = double.tryParse(_quantityController.text.trim().replaceAll(',', '.')) ??
@@ -224,6 +370,10 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
 
     setState(() => _saving = true);
     final notes = _notesController.text.trim();
+    // Preserve existing path unless removing; pending attach happens after persist.
+    final keptPath = _removeImage
+        ? null
+        : (_persisted?.imagePath ?? widget.item?.imagePath);
     final draft = FoodItem(
       id: widget.item?.id,
       name: _nameController.text.trim(),
@@ -234,15 +384,42 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
       category: _category,
       notes: notes.isEmpty ? null : notes,
       location: _location,
-      // Keep scan metadata on edit (spec 005 RF-19).
-      barcode: widget.item?.barcode,
-      imagePath: widget.item?.imagePath,
+      barcode: _persisted?.barcode ?? widget.item?.barcode,
+      imagePath: keptPath,
     );
 
-    if (_isEditing) {
-      await widget.repository.update(draft);
-    } else {
-      await widget.repository.insert(draft);
+    try {
+      late final FoodItem saved;
+      if (_isEditing) {
+        saved = await widget.repository.update(draft);
+        final id = saved.id!;
+        if (_removeImage) {
+          await _imageStore.clearAttached(
+            repository: widget.repository,
+            itemId: id,
+          );
+        } else if (_pendingImagePath != null) {
+          await _imageStore.attachFromFile(
+            repository: widget.repository,
+            itemId: id,
+            sourcePath: _pendingImagePath!,
+          );
+          _pendingImagePath = null;
+        }
+      } else {
+        saved = await widget.repository.insert(draft);
+        final id = saved.id;
+        if (id != null && _pendingImagePath != null) {
+          await _imageStore.attachFromFile(
+            repository: widget.repository,
+            itemId: id,
+            sourcePath: _pendingImagePath!,
+          );
+          _pendingImagePath = null;
+        }
+      }
+    } finally {
+      if (mounted) setState(() => _saving = false);
     }
 
     if (!mounted) return;
@@ -273,6 +450,7 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
     );
 
     if (ok == true) {
+      await _cleanupStaging();
       await widget.repository.delete(id);
       if (!mounted) return;
       Navigator.of(context).pop(true);
@@ -284,17 +462,18 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
     final l10n = AppLocalizations.of(context);
     final locale = Localizations.localeOf(context);
     final textTheme = Theme.of(context).textTheme;
+    final hasPhoto = _previewBytes != null && _previewBytes!.isNotEmpty;
 
     Widget sectionTitle(String title) => Padding(
-      padding: const EdgeInsets.only(bottom: 8, top: 8),
-      child: Text(
-        title,
-        style: textTheme.titleSmall?.copyWith(
-          color: Theme.of(context).colorScheme.primary,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
+          padding: const EdgeInsets.only(bottom: 8, top: 8),
+          child: Text(
+            title,
+            style: textTheme.titleSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        );
 
     return Scaffold(
       appBar: AppBar(
@@ -311,25 +490,45 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
-          if (widget.item?.imagePath != null &&
-              widget.item!.imagePath!.isNotEmpty) ...[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: AspectRatio(
-                aspectRatio: 1.4,
-                child: Image.file(
-                  File(widget.item!.imagePath!),
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => ColoredBox(
-                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
-                    child: const Center(
-                      child: Icon(Icons.image_not_supported_outlined, size: 48),
-                    ),
-                  ),
-                ),
-              ),
+          if (hasPhoto) ...[
+            ProductPhotoPreview(
+              image: MemoryImage(_previewBytes!),
+              aspectRatio: 1.4,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                TextButton.icon(
+                  onPressed: _saving
+                      ? null
+                      : () => unawaited(_choosePhotoSource(replacing: true)),
+                  icon: const Icon(Icons.photo_camera_outlined),
+                  label: Text(l10n.productImageReplace),
+                ),
+                TextButton.icon(
+                  onPressed: _saving ? null : _removePhoto,
+                  icon: const Icon(Icons.delete_outline),
+                  label: Text(l10n.productImageRemove),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+          ] else ...[
+            // Show replace/remove when path exists but bytes not loaded yet,
+            // or add when there is no photo.
+            if (_displayImagePath != null && !_removeImage) ...[
+              // Bytes still loading; avoid indeterminate progress (hangs tests).
+              const SizedBox(height: 8),
+            ] else ...[
+              OutlinedButton.icon(
+                onPressed: _saving
+                    ? null
+                    : () => unawaited(_choosePhotoSource(replacing: false)),
+                icon: const Icon(Icons.add_a_photo_outlined),
+                label: Text(l10n.productImageAdd),
+              ),
+              const SizedBox(height: 16),
+            ],
           ],
           sectionTitle(l10n.sectionIdentity),
           TextField(
@@ -458,7 +657,7 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
           ),
           const SizedBox(height: 28),
           FilledButton(
-            onPressed: _saving ? null : _save,
+            onPressed: _saving ? null : () => unawaited(_save()),
             child: Text(l10n.save),
           ),
         ],

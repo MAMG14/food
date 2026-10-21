@@ -20,12 +20,16 @@ class BarcodeScanPage extends StatefulWidget {
     required this.reminders,
     this.offClient,
     this.imageStore,
+    this.onImageAttached,
   });
 
   final FoodItemRepository repository;
   final ReminderScheduler reminders;
   final OffApiClient? offClient;
   final ProductImageStore? imageStore;
+
+  /// Fired when a product image finished downloading (refresh Home).
+  final VoidCallback? onImageAttached;
 
   @override
   State<BarcodeScanPage> createState() => _BarcodeScanPageState();
@@ -45,7 +49,6 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> {
   late final OffApiClient _offClient;
   late final ProductImageStore _imageStore;
   late final bool _ownsOffClient;
-  late final bool _ownsImageStore;
 
   var _lookupInFlight = false;
   var _cameraDenied = false;
@@ -54,8 +57,8 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> {
   void initState() {
     super.initState();
     _ownsOffClient = widget.offClient == null;
-    _ownsImageStore = widget.imageStore == null;
     _offClient = widget.offClient ?? OffApiClient();
+    // Prefer a long-lived store from [HomeShell]; never close it here.
     _imageStore = widget.imageStore ?? ProductImageStore();
   }
 
@@ -64,9 +67,6 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> {
     _controller.dispose();
     if (_ownsOffClient) {
       _offClient.close();
-    }
-    if (_ownsImageStore) {
-      _imageStore.close();
     }
     super.dispose();
   }
@@ -131,6 +131,7 @@ class _BarcodeScanPageState extends State<BarcodeScanPage> {
               reminders: widget.reminders,
               draft: draft,
               imageStore: _imageStore,
+              onImageAttached: widget.onImageAttached,
             ),
           ),
         );

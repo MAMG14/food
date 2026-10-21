@@ -3,7 +3,11 @@
 <plist version="1.0">
 <dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Alacena Bunker usa la cámara para escanear el código de barras del producto.</string>
+	<string>Alacena Bunker usa la cámara para escanear códigos de barras y fotografiar productos.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Alacena Bunker usa tu galería para asociar una foto al producto del inventario.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Alacena Bunker puede guardar fotos de productos en tu biblioteca si lo eliges.</string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>

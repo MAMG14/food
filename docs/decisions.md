@@ -57,7 +57,14 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
 
 ## D-006 — User-Agent de Open Food Facts (spec 005)
 
-- Fecha: 2026-10-21 · Estado: vigente · Afecta: `OffApiClient`
-- **Contexto:** la API de OFF pide identificar la app en las peticiones.
-- **Decisión:** cabecera `User-Agent: AlacenaBunker/1.0 (Flutter; https://github.com/MAMG14/food)`.
-- **Descartado:** SDK oficial completo solo para el GET por código.
+- Fecha: 2026-10-21 · Estado: vigente · Afecta: `OffApiClient`, `ProductImageStore`
+- **Contexto:** la API de OFF pide identificar la app en las peticiones HTTP (no es almacenamiento ni subida).
+- **Decisión:** cabecera `User-Agent: AlacenaBunker/1.0 (Flutter)` — solo nombre y versión. Las fotos se descargan de OFF y se guardan solo en el directorio local de la app.
+- **Descartado:** URL de GitHub u otro contacto en el User-Agent; SDK oficial completo solo para el GET por código; subir o espejar fotos en ningún remoto.
+
+## D-007 — Descarga de foto de producto al guardar (spec 005)
+
+- Fecha: 2026-10-21 · Estado: vigente · Afecta: `ProductImageStore`, `HomeShell`, confirmación de escaneo
+- **Contexto:** tras escanear, la confirmación mostraba la imagen de red; al guardar se lanzaba la descarga local en segundo plano y al cerrar el escáner se cerraba el `http.Client` → la descarga fallaba en silencio y en edición no había foto.
+- **Decisión:** `ProductImageStore` vive en `HomeShell` (no se cierra con la ruta de escaneo); al guardar se **espera** `downloadAndAttach` antes de volver a Home (fallos siguen tragados en el almacén).
+- **Descartado:** cliente HTTP efímero por descarga (rompe mocks de test); dejar la descarga fire-and-forget tras pop.

@@ -114,9 +114,15 @@
   "scanLookingUp": "Looking up product…",
   "scanCameraDeniedTitle": "Camera access needed",
   "scanCameraDeniedBody": "Enable camera permission or register the product manually.",
-  "scanNotFound": "We couldn't find that barcode in Open Food Facts. You can register it manually.",
-  "scanNetworkError": "No connection or the service is unavailable. You can register it manually.",
+  "scanNotFound": "We couldn't find that product. You can register it manually.",
+  "scanNetworkError": "No internet or the lookup failed. You can register it manually.",
   "scanConfirmTitle": "Confirm product",
-  "scanOffAttribution": "Product data: Open Food Facts",
-  "scanSave": "Save to inventory"
+  "scanSave": "Save to inventory",
+  "productImageOpen": "View photo",
+  "productImageAdd": "Add photo",
+  "productImageCamera": "Camera",
+  "productImageGallery": "Gallery",
+  "productImageReplace": "Change photo",
+  "productImageRemove": "Remove photo",
+  "productImagePermissionDenied": "Photo permission denied. You can still save the item without an image."
 }

@@ -93,9 +93,15 @@
   "scanLookingUp": "Buscando producto…",
   "scanCameraDeniedTitle": "Sin acceso a la cámara",
   "scanCameraDeniedBody": "Activa el permiso de cámara o registra el producto a mano.",
-  "scanNotFound": "No encontramos ese código en Open Food Facts. Puedes registrarlo a mano.",
-  "scanNetworkError": "No hay conexión o el servicio no responde. Puedes registrarlo a mano.",
+  "scanNotFound": "No encontramos ese producto. Puedes registrarlo a mano.",
+  "scanNetworkError": "No hay internet o la búsqueda no responde. Puedes registrarlo a mano.",
   "scanConfirmTitle": "Confirmar producto",
-  "scanOffAttribution": "Datos de producto: Open Food Facts",
-  "scanSave": "Guardar en inventario"
+  "scanSave": "Guardar en inventario",
+  "productImageOpen": "Ver foto",
+  "productImageAdd": "Añadir foto",
+  "productImageCamera": "Cámara",
+  "productImageGallery": "Galería",
+  "productImageReplace": "Cambiar foto",
+  "productImageRemove": "Quitar foto",
+  "productImagePermissionDenied": "Sin permiso para la foto. Puedes guardar el artículo sin imagen."
 }

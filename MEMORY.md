@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec **005**: T1–T9 hechas; falta **T10** verificación manual en dispositivo (escaneo OFF, sin red, manual, cámara).
+- Spec **005**: T1–T9 y T11–T14 hechas. Falta **T10** verificación manual (escaneo, sin red, manual con/sin foto cámara+galería, copy sin «Open Food Facts»).
 - Spec 003: verificación manual restante aplazada.

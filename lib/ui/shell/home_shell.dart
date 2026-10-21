@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:food/data/food_item_repository.dart';
+import 'package:food/data/product_image_store.dart';
 import 'package:food/domain/home_filter.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
@@ -31,6 +32,15 @@ class _HomeShellState extends State<HomeShell> {
   var _tabIndex = 0;
   final _inventoryKey = GlobalKey<InventoryPageState>();
 
+  /// Survives the scan route so in-flight image downloads are not cancelled.
+  final _imageStore = ProductImageStore();
+
+  @override
+  void dispose() {
+    _imageStore.close();
+    super.dispose();
+  }
+
   Future<void> _openAdd() async {
     setState(() => _tabIndex = 1);
     final changed = await Navigator.of(context).push<bool>(
@@ -38,6 +48,10 @@ class _HomeShellState extends State<HomeShell> {
         builder: (_) => BarcodeScanPage(
           repository: widget.repository,
           reminders: widget.reminders,
+          imageStore: _imageStore,
+          onImageAttached: () {
+            unawaited(_inventoryKey.currentState?.reload());
+          },
         ),
       ),
     );

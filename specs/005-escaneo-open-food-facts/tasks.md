@@ -23,7 +23,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
   - Hecho cuando: Añadir abre escáner; «Registrar manual» → form 001; permiso denegado → mensaje + manual; loading en consulta; **segundo código ignorado** mientras hay fetch; **sin match** y **sin red/error** → mensaje + form manual.
 
 - [x] **T7. Confirmación post-match + guardado.** RF-5, RF-9–15, RF-20
-  - Hecho cuando: prefill editable, caducidad obligatoria, atribución OFF; save hace insert (`imagePath` null) y luego download→update según contrato T4; vuelve a Home sin esperar la foto.
+  - Hecho cuando: prefill editable, caducidad obligatoria; save hace insert (`imagePath` null) y luego download→update según contrato T4; vuelve a Home.
 
 - [x] **T8. Foto en lista / ficha + i18n.** RF-18, RNF-4
   - Hecho cuando: miniatura si hay imagePath; cadenas nuevas en ARB (es); sin hardcode de mensajes de error/escáner.
@@ -31,5 +31,17 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T9. Integración recordatorios + edición conserva foto.** RF-15, RF-19, (003)
   - Hecho cuando: alta por escaneo llama `resync` como el form actual; editar artículo no borra imagePath; analyze + suite en verde.
 
+- [x] **T11. Copy UI sin nombre de proveedor.** RF-20, RNF-4
+  - Hecho cuando: ARB (es/en) sin «Open Food Facts»; confirmación sin atribución; mensajes de no encontrado / red en términos de internet o producto; `flutter test` + analyze en verde.
+
+- [x] **T12. ProductImageStore: adjuntar desde archivo + quitar.** RF-22–23
+  - Hecho cuando: API para copiar un archivo local a `pathForItem(id)` y actualizar path; quitar borra archivo y deja `imagePath` null; cancelar sesión borra temp; tests con temp dir.
+
+- [x] **T13. Deps + permisos: `image_picker`, cámara y galería.** RF-21, RNF-1, RNF-7
+  - Hecho cuando: dependencia en pubspec; Android (`CAMERA` + lectura de imágenes/media) e iOS (`NSCameraUsageDescription`, `NSPhotoLibraryUsageDescription`) declarados; analyze limpio.
+
+- [x] **T14. UI foto en alta/edición manual.** RF-19, RF-21–23, RNF-7
+  - Hecho cuando: form ofrece **Cámara** y **Galería**; con foto existente → **Reemplazar** (vía cámara/galería) y **Quitar**; reutiliza `ProductPhotoPreview` (zoom); editar **sin tocar** la foto conserva `imagePath` (test); permiso denegado no bloquea guardar; cancelar limpia temp; analyze + suite en verde.
+
 - [ ] **T10. Punto de control en dispositivo.** Criterios de finalización
-  - Hecho cuando: prueba manual — producto conocido OFF, inexistente, modo avión, Registrar manual, permiso cámara; `MEMORY.md` y spec → `implementada` tras OK del usuario.
+  - Hecho cuando: prueba manual — producto conocido, inexistente, modo avión, Registrar manual **con/sin foto** (cámara y galería), editar/reemplazar/quitar foto, UI sin menciones a Open Food Facts; `MEMORY.md` y spec → `implementada` tras OK del usuario.

@@ -629,13 +629,13 @@ abstract class AppLocalizations {
   /// No description provided for @scanNotFound.
   ///
   /// In en, this message translates to:
-  /// **'We couldn\'t find that barcode in Open Food Facts. You can register it manually.'**
+  /// **'We couldn\'t find that product. You can register it manually.'**
   String get scanNotFound;
 
   /// No description provided for @scanNetworkError.
   ///
   /// In en, this message translates to:
-  /// **'No connection or the service is unavailable. You can register it manually.'**
+  /// **'No internet or the lookup failed. You can register it manually.'**
   String get scanNetworkError;
 
   /// No description provided for @scanConfirmTitle.
@@ -644,17 +644,53 @@ abstract class AppLocalizations {
   /// **'Confirm product'**
   String get scanConfirmTitle;
 
-  /// No description provided for @scanOffAttribution.
-  ///
-  /// In en, this message translates to:
-  /// **'Product data: Open Food Facts'**
-  String get scanOffAttribution;
-
   /// No description provided for @scanSave.
   ///
   /// In en, this message translates to:
   /// **'Save to inventory'**
   String get scanSave;
+
+  /// No description provided for @productImageOpen.
+  ///
+  /// In en, this message translates to:
+  /// **'View photo'**
+  String get productImageOpen;
+
+  /// No description provided for @productImageAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add photo'**
+  String get productImageAdd;
+
+  /// No description provided for @productImageCamera.
+  ///
+  /// In en, this message translates to:
+  /// **'Camera'**
+  String get productImageCamera;
+
+  /// No description provided for @productImageGallery.
+  ///
+  /// In en, this message translates to:
+  /// **'Gallery'**
+  String get productImageGallery;
+
+  /// No description provided for @productImageReplace.
+  ///
+  /// In en, this message translates to:
+  /// **'Change photo'**
+  String get productImageReplace;
+
+  /// No description provided for @productImageRemove.
+  ///
+  /// In en, this message translates to:
+  /// **'Remove photo'**
+  String get productImageRemove;
+
+  /// No description provided for @productImagePermissionDenied.
+  ///
+  /// In en, this message translates to:
+  /// **'Photo permission denied. You can still save the item without an image.'**
+  String get productImagePermissionDenied;
 }
 
 class _AppLocalizationsDelegate

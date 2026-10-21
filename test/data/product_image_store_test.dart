@@ -108,4 +108,43 @@ void main() {
     expect(found!.imagePath, isNull);
     store.close();
   });
+
+  test('attachFromFile writes path and clearAttached removes it', () async {
+    final imageDir = Directory(p.join(tempDir.path, 'imgs4'));
+    final store = ProductImageStore(documentsDirectory: () => imageDir);
+    final source = File(p.join(tempDir.path, 'picked.jpg'));
+    await source.writeAsBytes([10, 20, 30]);
+
+    final saved = await repo.insert(sample());
+    final path = await store.attachFromFile(
+      repository: repo,
+      itemId: saved.id!,
+      sourcePath: source.path,
+    );
+    expect(path, isNotNull);
+    final found = await repo.getById(saved.id!);
+    expect(found!.imagePath, path);
+    expect(File(path!).existsSync(), isTrue);
+
+    await store.clearAttached(repository: repo, itemId: saved.id!);
+    final cleared = await repo.getById(saved.id!);
+    expect(cleared!.imagePath, isNull);
+    expect(File(path).existsSync(), isFalse);
+    store.close();
+  });
+
+  test('stageFile then cancel deletes staging', () async {
+    final imageDir = Directory(p.join(tempDir.path, 'imgs5'));
+    final store = ProductImageStore(documentsDirectory: () => imageDir);
+    final source = File(p.join(tempDir.path, 'cam.jpg'));
+    await source.writeAsBytes([1, 1, 1]);
+
+    final staged = await store.stageFile(source.path);
+    expect(staged, isNotNull);
+    expect(File(staged!).existsSync(), isTrue);
+
+    await store.deleteIfExists(staged);
+    expect(File(staged).existsSync(), isFalse);
+    store.close();
+  });
 }

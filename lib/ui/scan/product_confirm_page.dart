@@ -10,6 +10,7 @@ import 'package:food/domain/validation.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:food/ui/format/expiry_format.dart';
+import 'package:food/ui/item/product_photo_preview.dart';
 import 'package:food/ui/l10n_labels.dart';
 
 /// Editable confirmation after an Open Food Facts match (spec 005).
@@ -20,12 +21,16 @@ class ProductConfirmPage extends StatefulWidget {
     required this.reminders,
     required this.draft,
     required this.imageStore,
+    this.onImageAttached,
   });
 
   final FoodItemRepository repository;
   final ReminderScheduler reminders;
   final OffProductDraft draft;
   final ProductImageStore imageStore;
+
+  /// Called on the UI isolate after a successful local image attach.
+  final VoidCallback? onImageAttached;
 
   @override
   State<ProductConfirmPage> createState() => _ProductConfirmPageState();
@@ -155,12 +160,12 @@ class _ProductConfirmPageState extends State<ProductConfirmPage> {
 
     final url = widget.draft.imageUrl;
     if (url != null && url.isNotEmpty && item.id != null) {
-      unawaited(
-        widget.imageStore.downloadAndAttach(
-          repository: widget.repository,
-          itemId: item.id!,
-          imageUrl: url,
-        ),
+      // Await so Home/edit see imagePath; failures are swallowed in the store.
+      await widget.imageStore.downloadAndAttach(
+        repository: widget.repository,
+        itemId: item.id!,
+        imageUrl: url,
+        onAttached: widget.onImageAttached,
       );
     }
 
@@ -181,27 +186,12 @@ class _ProductConfirmPageState extends State<ProductConfirmPage> {
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
           if (imageUrl != null && imageUrl.isNotEmpty) ...[
-            ClipRRect(
-              borderRadius: BorderRadius.circular(12),
-              child: AspectRatio(
-                aspectRatio: 1.2,
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  errorBuilder: (_, _, _) => const ColoredBox(
-                    color: Color(0xFFE0E0E0),
-                    child: Icon(Icons.image_not_supported_outlined, size: 48),
-                  ),
-                ),
-              ),
+            ProductPhotoPreview(
+              image: NetworkImage(imageUrl),
+              aspectRatio: 1.2,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
           ],
-          Text(
-            l10n.scanOffAttribution,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-          const SizedBox(height: 16),
           TextField(
             controller: _nameController,
             decoration: InputDecoration(

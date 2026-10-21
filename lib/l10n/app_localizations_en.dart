@@ -305,18 +305,37 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get scanNotFound =>
-      'We couldn\'t find that barcode in Open Food Facts. You can register it manually.';
+      'We couldn\'t find that product. You can register it manually.';
 
   @override
   String get scanNetworkError =>
-      'No connection or the service is unavailable. You can register it manually.';
+      'No internet or the lookup failed. You can register it manually.';
 
   @override
   String get scanConfirmTitle => 'Confirm product';
 
   @override
-  String get scanOffAttribution => 'Product data: Open Food Facts';
+  String get scanSave => 'Save to inventory';
 
   @override
-  String get scanSave => 'Save to inventory';
+  String get productImageOpen => 'View photo';
+
+  @override
+  String get productImageAdd => 'Add photo';
+
+  @override
+  String get productImageCamera => 'Camera';
+
+  @override
+  String get productImageGallery => 'Gallery';
+
+  @override
+  String get productImageReplace => 'Change photo';
+
+  @override
+  String get productImageRemove => 'Remove photo';
+
+  @override
+  String get productImagePermissionDenied =>
+      'Photo permission denied. You can still save the item without an image.';
 }

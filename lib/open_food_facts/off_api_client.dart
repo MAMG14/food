@@ -12,7 +12,7 @@ class OffApiClient {
     this.baseUrl = 'https://world.openfoodfacts.org',
     this.timeout = const Duration(seconds: 12),
     this.userAgent =
-        'AlacenaBunker/1.0 (Flutter; https://github.com/MAMG14/food)',
+        'AlacenaBunker/1.0 (Flutter)',
   }) : _http = httpClient ?? http.Client();
 
   final http.Client _http;
