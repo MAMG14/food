@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec 003: verificar en dispositivo lo que queda en `specs/003-recordatorios/tasks.md` (los tests de integración ya pasan en simulador iOS); luego pasar la spec a implementada.
-- Después: feedback del usuario o nueva spec (candidatas: marca/logo definitivo).
+- Spec 004: plan/tareas **aprobados**; implementación en curso (`specs/004-alacena-bunker-ui/tasks.md`).
+- Spec 003: código listo; verificación manual aplazada (salvo puente tap → filtro `soon` en 004).
