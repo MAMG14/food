@@ -90,6 +90,13 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     const bg = splashCanvasColor;
+    final scale =
+        MediaQuery.sizeOf(context).width / splashFigmaArtboardWidth;
+    final iconW =
+        splashFigmaIconWidth * scale * splashLottiePaddingFactor;
+    final iconH =
+        splashFigmaIconHeight * scale * splashLottiePaddingFactor;
+    final brandSize = splashBrandFontSize * scale;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
@@ -106,26 +113,28 @@ class SplashView extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 if (composition == null)
-                  const SizedBox(
-                    width: 48,
-                    height: 48,
-                    child: CircularProgressIndicator(color: foodSeedColor),
+                  SizedBox(
+                    width: iconW * 0.25,
+                    height: iconW * 0.25,
+                    child: const CircularProgressIndicator(
+                      color: foodSeedColor,
+                    ),
                   )
                 else
                   Lottie(
                     composition: composition,
-                    width: 160,
-                    height: 200,
+                    width: iconW,
+                    height: iconH,
                     fit: BoxFit.contain,
                     repeat: false,
                   ),
-                const SizedBox(height: 16),
+                SizedBox(height: 16 * scale),
                 Text(
                   l10n.splashBrandName,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontFamily: splashBrandFontFamily,
-                    fontSize: splashBrandFontSize,
+                    fontSize: brandSize,
                     fontWeight: FontWeight.w400,
                     color: Colors.black,
                     height: 1.0,
