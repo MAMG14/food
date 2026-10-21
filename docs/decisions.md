@@ -54,3 +54,10 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
 - **Causa:** Flutter fija `targetSdkVersion = 36`. En API 36 el edge-to-edge es obligatorio (sin opt-out). `statusBarColor` / `systemNavigationBarColor` se ignoran. `SystemUiMode.manual` llama a `disableEdgeToEdge()` en el embedder y pelea con Android → franja negra detrás de la barra y DEBUG recortado. El splash se veía bien porque pinta crema a pantalla completa detrás de la barra transparente.
 - **Decisión:** abrazar edge-to-edge: barras transparentes, iconos oscuros, AppBar/canvas pintan detrás; un solo `Scaffold` en Home; banner DEBUG desplazado bajo el `viewPadding`; `NormalTheme.windowBackground` crema sólido. En `MainActivity`, forzar `WindowCompat.setDecorFitsSystemWindows(false)` + iconos claros de barra tras el splash (en Samsung/API 37 el embedder no siempre lo aplicaba a tiempo y quedaba una franja negra opaca encima del AppBar).
 - **Descartado:** bajar `targetSdk` (rompe el default de Flutter y políticas de Play a medio plazo); seguir forzando layout no edge-to-edge.
+
+## D-006 — User-Agent de Open Food Facts (spec 005)
+
+- Fecha: 2026-10-21 · Estado: vigente · Afecta: `OffApiClient`
+- **Contexto:** la API de OFF pide identificar la app en las peticiones.
+- **Decisión:** cabecera `User-Agent: AlacenaBunker/1.0 (Flutter; https://github.com/MAMG14/food)`.
+- **Descartado:** SDK oficial completo solo para el GET por código.

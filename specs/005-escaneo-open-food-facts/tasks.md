@@ -10,7 +10,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T2. Schema v3 + repository (barcode, image_path).** RNF-2, RF-15
   - Hecho cuando: migración v2→v3 no pierde artículos; insert/update/get incluyen barcode e imagePath; al borrar se elimina el archivo de imagen si existía (store fake o temp).
 
-- [ ] **T3. Cliente OFF (HTTP) + tests con mock.** RF-4–8, RNF-5
+- [x] **T3. Cliente OFF (HTTP) + tests con mock.** RF-4–8, RNF-5
   - Hecho cuando: match / no encontrado / error de red cubiertos con cliente falso; User-Agent identificable; timeout definido.
 
 - [ ] **T4. Almacén de fotos (descarga async) + contrato.** RF-12, RF-16–17
