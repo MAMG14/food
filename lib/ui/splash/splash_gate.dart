@@ -94,11 +94,9 @@ class SplashView extends StatelessWidget {
     const bg = splashCanvasColor;
     final size = MediaQuery.sizeOf(context);
     final scale = size.width / splashFigmaArtboardWidth;
-    // Target Figma icon size, inflated for Lottie canvas padding.
-    var iconW =
-        splashFigmaIconWidth * scale * splashLottiePaddingFactor;
-    var iconH =
-        splashFigmaIconHeight * scale * splashLottiePaddingFactor;
+    // 1:1 with cropped Lottie / Figma icon frame (no padding factor).
+    var iconW = splashLottieWidth * scale;
+    var iconH = splashLottieHeight * scale;
     // Keep mark + title inside short viewports (e.g. tests / landscape).
     final maxIconH = size.height * 0.42;
     if (iconH > maxIconH) {

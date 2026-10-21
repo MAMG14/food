@@ -11,14 +11,12 @@ const splashCanvasColor = Color(0xFFF7F3EE);
 const splashBrandFontFamily = 'Langar';
 const splashBrandFontSize = 36.0;
 
-/// Figma splash artboard and icon frame (Splash Screen - 1).
+/// Figma splash artboard (Splash Screen - 1).
 const splashFigmaArtboardWidth = 412.0;
-const splashFigmaIconWidth = 110.0;
-const splashFigmaIconHeight = 175.56;
 
-/// Lottie canvas is 512×512 with empty margin; inflate so the mark matches
-/// the visual size of the Figma icon frame.
-const splashLottiePaddingFactor = 2.0;
+/// Cropped Lottie canvas (matches Figma icon ~110×176).
+const splashLottieWidth = 112.0;
+const splashLottieHeight = 177.0;
 
 /// Central Material 3 theme for Alacena Bunker (spec 004).
 ThemeData buildFoodTheme() {
