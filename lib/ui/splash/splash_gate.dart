@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food/l10n/app_localizations.dart';
@@ -90,13 +92,21 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = AppLocalizations.of(context);
     const bg = splashCanvasColor;
-    final scale =
-        MediaQuery.sizeOf(context).width / splashFigmaArtboardWidth;
-    final iconW =
+    final size = MediaQuery.sizeOf(context);
+    final scale = size.width / splashFigmaArtboardWidth;
+    // Target Figma icon size, inflated for Lottie canvas padding.
+    var iconW =
         splashFigmaIconWidth * scale * splashLottiePaddingFactor;
-    final iconH =
+    var iconH =
         splashFigmaIconHeight * scale * splashLottiePaddingFactor;
-    final brandSize = splashBrandFontSize * scale;
+    // Keep mark + title inside short viewports (e.g. tests / landscape).
+    final maxIconH = size.height * 0.42;
+    if (iconH > maxIconH) {
+      final shrink = maxIconH / iconH;
+      iconW *= shrink;
+      iconH = maxIconH;
+    }
+    final brandSize = math.max(22.0, splashBrandFontSize * scale);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
