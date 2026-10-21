@@ -16,7 +16,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T4. Tema Alacena Bunker + display name + splash nativo.** RF-1, RF-3, RF-17
   - Hecho cuando: tema verde alineado a Figma; label Android/iOS “Alacena Bunker”; splash nativo coherente; analyze limpio.
 
-- [ ] **T5. SplashGate con Lottie + fallback.** RF-2
+- [x] **T5. SplashGate con Lottie + fallback.** RF-2
   - Hecho cuando: Lottie ~1,5 s en arranque; tests pueden acortar/saltar; si falla el asset, frame estático y continúa ≤ 2 s.
 
 - [ ] **T6. Onboarding + cableado de arranque.** RF-4–6

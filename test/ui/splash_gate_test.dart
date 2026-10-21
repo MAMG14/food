@@ -7,10 +7,8 @@ import 'package:food/data/food_database.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/data/reminder_log_repository.dart';
 import 'package:food/data/reminder_settings_repository.dart';
-import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:food/ui/home/inventory_page.dart';
-import 'package:food/ui/splash/food_mark.dart';
 import 'package:food/ui/splash/splash_gate.dart';
 import 'package:path/path.dart' as p;
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -51,34 +49,31 @@ void main() {
     }
   });
 
-  testWidgets('splash shows brand then fades to inventory', (tester) async {
-    const splashDuration = Duration(milliseconds: 400);
-
+  testWidgets('splash shows then fades to inventory', (tester) async {
     await tester.pumpWidget(
-      FoodApp(repository: repo, reminders: reminders, splashDuration: splashDuration),
+      FoodApp(repository: repo, reminders: reminders),
     );
     await tester.pump();
 
     expect(find.byType(SplashView), findsOneWidget);
-    expect(find.byType(FoodMark), findsOneWidget);
     expect(find.byType(InventoryPage), findsNothing);
 
-    final l10n = lookupAppLocalizations(const Locale('es'));
-    expect(find.text(l10n.appTitle), findsWidgets);
-    expect(find.text(l10n.splashTagline), findsOneWidget);
-
-    await tester.pump(splashDuration);
+    // Lottie (~1.5s) or hard fallback (2s); avoid pumpAndSettle (ticker).
+    await tester.pump(kSplashFallbackMax);
     await tester.pump();
     await tester.pump(const Duration(milliseconds: 400));
 
     expect(find.byType(SplashView), findsNothing);
     expect(find.byType(InventoryPage), findsOneWidget);
-    expect(find.text(l10n.tabActive), findsOneWidget);
   });
 
   testWidgets('zero duration skips branded splash', (tester) async {
     await tester.pumpWidget(
-      FoodApp(repository: repo, reminders: reminders, splashDuration: Duration.zero),
+      FoodApp(
+        repository: repo,
+        reminders: reminders,
+        splashDuration: Duration.zero,
+      ),
     );
     await tester.pump();
 
