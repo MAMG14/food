@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:food/l10n/app_localizations.dart';
 import 'package:food/ui/theme/food_theme.dart';
 import 'package:lottie/lottie.dart';
 
@@ -12,7 +13,7 @@ const kSplashDuration = Duration(milliseconds: 1500);
 /// Hard cap if load/play never completes.
 const kSplashFallbackMax = Duration(seconds: 3);
 
-/// Brand splash: plays the Lottie once, then fades into [child].
+/// Brand splash: Lottie + «ALACENA BUNKER» (Figma), then fade into [child].
 class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
@@ -87,31 +88,51 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Figma splash frame 1: brand green canvas behind the Lottie.
-    const bg = foodSeedColor;
+    final l10n = AppLocalizations.of(context);
+    const bg = splashCanvasColor;
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light.copyWith(
+      value: SystemUiOverlayStyle.dark.copyWith(
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: bg,
-        systemNavigationBarIconBrightness: Brightness.light,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
         backgroundColor: bg,
         body: Center(
-          child: composition == null
-              ? const SizedBox(
-                  width: 48,
-                  height: 48,
-                  child: CircularProgressIndicator(color: Colors.white),
-                )
-              : Lottie(
-                  composition: composition,
-                  width: 280,
-                  height: 280,
-                  fit: BoxFit.contain,
-                  repeat: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (composition == null)
+                  const SizedBox(
+                    width: 48,
+                    height: 48,
+                    child: CircularProgressIndicator(color: foodSeedColor),
+                  )
+                else
+                  Lottie(
+                    composition: composition,
+                    width: 160,
+                    height: 200,
+                    fit: BoxFit.contain,
+                    repeat: false,
+                  ),
+                const SizedBox(height: 16),
+                Text(
+                  l10n.splashBrandName,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                    color: Colors.black,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: 1.2,
+                    height: 1.1,
+                  ),
                 ),
+              ],
+            ),
+          ),
         ),
       ),
     );

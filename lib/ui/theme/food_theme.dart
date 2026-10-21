@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:food/domain/urgency.dart';
 
-/// Brand seed (Alacena Bunker) — native splash and Flutter splash must match.
+/// Brand seed (Alacena Bunker) for in-app chrome.
 const foodSeedColor = Color(0xFF2E7D4F);
+
+/// Splash / onboarding canvas from Figma (cream).
+const splashCanvasColor = Color(0xFFF7F3EE);
 
 /// Central Material 3 theme for Alacena Bunker (spec 004).
 ThemeData buildFoodTheme() {

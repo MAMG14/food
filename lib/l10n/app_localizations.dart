@@ -104,6 +104,12 @@ abstract class AppLocalizations {
   /// **'Alacena Bunker'**
   String get appTitle;
 
+  /// No description provided for @splashBrandName.
+  ///
+  /// In en, this message translates to:
+  /// **'ALACENA BUNKER'**
+  String get splashBrandName;
+
   /// No description provided for @tabActive.
   ///
   /// In en, this message translates to:

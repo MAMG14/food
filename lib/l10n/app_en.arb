@@ -1,6 +1,7 @@
 {
   "@@locale": "en",
   "appTitle": "Alacena Bunker",
+  "splashBrandName": "ALACENA BUNKER",
   "tabActive": "Active",
   "tabExpired": "Expired",
   "sortByName": "Sort by name",

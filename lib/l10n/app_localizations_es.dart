@@ -13,6 +13,9 @@ class AppLocalizationsEs extends AppLocalizations {
   String get appTitle => 'Alacena Bunker';
 
   @override
+  String get splashBrandName => 'ALACENA BUNKER';
+
+  @override
   String get tabActive => 'Activos';
 
   @override

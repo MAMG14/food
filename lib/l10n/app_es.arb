@@ -1,6 +1,7 @@
 {
   "@@locale": "es",
   "appTitle": "Alacena Bunker",
+  "splashBrandName": "ALACENA BUNKER",
   "tabActive": "Activos",
   "tabExpired": "Caducados",
   "sortByName": "Ordenar por nombre",
