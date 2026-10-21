@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:path/path.dart' as p;
 import 'package:sqflite/sqflite.dart';
 
@@ -69,6 +71,18 @@ CREATE TABLE reminder_log (
   /// Call once at app startup. Tests should set [databaseFactory] to FFI first.
   static void ensureInitialized() {
     databaseFactoryOrNull ??= databaseFactorySqflitePlugin;
+  }
+
+  /// Default on-disk path (`…/food.db`) used when [databasePath] is null.
+  static Future<String> defaultDatabaseFilePath() async {
+    return p.join(await getDatabasesPath(), dbName);
+  }
+
+  /// Whether the default DB file already exists (upgrade vs clean install).
+  ///
+  /// Call **before** the first [openDatabase] in a session (spec 004).
+  static Future<bool> defaultDatabaseFileExists() async {
+    return File(await defaultDatabaseFilePath()).exists();
   }
 
   Future<Database> get database async {

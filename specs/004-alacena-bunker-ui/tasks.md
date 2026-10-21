@@ -4,10 +4,10 @@ Estado: aprobado
 
 Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flutter test` en verde, marcar y commit `004/Tn: …`; parar solo en puntos de control.
 
-- [ ] **T1. Dominio `HomeFilter` + tests.** RF-7–10, RNF-3
+- [x] **T1. Dominio `HomeFilter` + tests.** RF-7–10, RNF-3
   - Hecho cuando: `flutter test test/domain/home_filter_test.dart` cubre contadores, filtrado y `defaultHomeFilter` (vacío, solo caducados, mezcla).
 
-- [ ] **T2. Preferencias de onboarding + skip por instalación previa.** RF-5–6
+- [x] **T2. Preferencias de onboarding + skip por instalación previa.** RF-5–6
   - Hecho cuando: tests cubren flag por defecto, `markCompleted`, “hay artículos ⇒ completed”, y “archivo SQLite ya existía + 0 artículos ⇒ completed” (instalación limpia sin DB ⇒ no completed).
 
 - [ ] **T3. Dependencias y assets.** RNF-4
