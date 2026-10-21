@@ -17,5 +17,5 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 
 ## Próximo paso
 
-- Spec **005** (plan aprobado): implementar T1–T10 en `specs/005-escaneo-open-food-facts/tasks.md` (cadenas UI solo vía ARB/i18n).
+- Spec **005** (plan aprobado): T1–T4 hechas (mapeo, schema v3, cliente OFF, fotos); siguen T5–T10 (escáner UI + ARB).
 - Spec 003: verificación manual restante aplazada.
