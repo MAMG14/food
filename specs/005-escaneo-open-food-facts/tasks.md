@@ -13,7 +13,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T3. Cliente OFF (HTTP) + tests con mock.** RF-4–8, RNF-5
   - Hecho cuando: match / no encontrado / error de red cubiertos con cliente falso; User-Agent identificable; timeout definido.
 
-- [ ] **T4. Almacén de fotos (descarga async) + contrato.** RF-12, RF-16–17
+- [x] **T4. Almacén de fotos (descarga async) + contrato.** RF-12, RF-16–17
   - Hecho cuando: tras insert con `imagePath` null, download por `itemId` y update solo si el ítem existe; cancel antes de insert no deja archivos; delete durante download no deja path huérfano; fallo no bloquea UI; tests con fake/temp; **sin** reintento al reabrir (005).
 
 - [ ] **T5. Dependencias nativas: mobile_scanner + permisos cámara.** RF-1, RF-3, RNF-1
