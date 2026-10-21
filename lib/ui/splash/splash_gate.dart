@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food/ui/splash/food_mark.dart';
 import 'package:food/ui/theme/food_theme.dart';
 import 'package:lottie/lottie.dart';
 
@@ -13,7 +12,7 @@ const kSplashDuration = Duration(milliseconds: 1500);
 /// Hard cap if the animation never reports completion.
 const kSplashFallbackMax = Duration(seconds: 2);
 
-/// Native-matching splash (Lottie), then fade into [child].
+/// Brand splash: always the Lottie, then fade into [child].
 class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
@@ -23,8 +22,7 @@ class SplashGate extends StatefulWidget {
 
   final Widget child;
 
-  /// [Duration.zero] skips the splash (tests). Otherwise used as a minimum
-  /// wait before revealing [child] when Lottie is unavailable.
+  /// [Duration.zero] skips the splash (tests).
   final Duration duration;
 
   @override
@@ -36,7 +34,6 @@ class _SplashGateState extends State<SplashGate>
   bool _showSplash = true;
   bool _completed = false;
   AnimationController? _lottieController;
-  var _useFallback = false;
 
   @override
   void initState() {
@@ -46,10 +43,6 @@ class _SplashGateState extends State<SplashGate>
       return;
     }
     _lottieController = AnimationController(vsync: this);
-    _armFallbackTimer();
-  }
-
-  void _armFallbackTimer() {
     Future<void>.delayed(kSplashFallbackMax, () {
       if (!mounted || _completed) return;
       _finish();
@@ -71,15 +64,6 @@ class _SplashGateState extends State<SplashGate>
       ..forward().whenComplete(_finish);
   }
 
-  void _onLottieFailed() {
-    if (!mounted) return;
-    setState(() => _useFallback = true);
-    Future<void>.delayed(widget.duration, () {
-      if (!mounted || _completed) return;
-      _finish();
-    });
-  }
-
   @override
   void dispose() {
     _lottieController?.dispose();
@@ -96,9 +80,8 @@ class _SplashGateState extends State<SplashGate>
           ? SplashView(
               key: const ValueKey('splash'),
               controller: _lottieController,
-              useFallback: _useFallback,
               onLoaded: _onLottieLoaded,
-              onFailed: _onLottieFailed,
+              onFailed: _finish,
             )
           : KeyedSubtree(key: const ValueKey('home'), child: widget.child),
     );
@@ -109,13 +92,11 @@ class SplashView extends StatelessWidget {
   const SplashView({
     super.key,
     this.controller,
-    this.useFallback = false,
     this.onLoaded,
     this.onFailed,
   });
 
   final AnimationController? controller;
-  final bool useFallback;
   final void Function(LottieComposition composition)? onLoaded;
   final VoidCallback? onFailed;
 
@@ -131,20 +112,20 @@ class SplashView extends StatelessWidget {
         backgroundColor: foodSeedColor,
         body: SafeArea(
           child: Center(
-            child: useFallback || controller == null
-                ? const FoodMark(size: 160)
+            child: controller == null
+                ? const SizedBox.shrink()
                 : Lottie.asset(
                     kSplashLottieAsset,
                     controller: controller,
-                    width: 220,
-                    height: 220,
+                    width: 240,
+                    height: 240,
                     fit: BoxFit.contain,
                     onLoaded: onLoaded,
                     errorBuilder: (context, error, stackTrace) {
                       WidgetsBinding.instance.addPostFrameCallback((_) {
                         onFailed?.call();
                       });
-                      return const FoodMark(size: 160);
+                      return const SizedBox.shrink();
                     },
                   ),
           ),

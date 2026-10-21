@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:food/l10n/app_localizations.dart';
-import 'package:food/ui/splash/food_mark.dart';
+import 'package:food/ui/splash/splash_gate.dart';
 import 'package:food/ui/theme/food_theme.dart';
+import 'package:lottie/lottie.dart';
 
 /// First-run welcome screen (spec 004).
 class OnboardingPage extends StatelessWidget {
@@ -22,7 +23,13 @@ class OnboardingPage extends StatelessWidget {
           child: Column(
             children: [
               const Spacer(flex: 2),
-              const FoodMark(size: 120),
+              Lottie.asset(
+                kSplashLottieAsset,
+                width: 180,
+                height: 180,
+                fit: BoxFit.contain,
+                repeat: false,
+              ),
               const SizedBox(height: 32),
               Text(
                 l10n.onboardingWelcome,
