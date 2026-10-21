@@ -26,10 +26,43 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get emptyActive =>
-      'Aún no hay artículos activos. Añade comida con el botón +.';
+      'Aún no hay artículos activos. Añade alimentos con el botón +.';
 
   @override
   String get emptyExpired => 'No hay artículos caducados.';
+
+  @override
+  String get emptySoon => 'Nada por caducar en los próximos días.';
+
+  @override
+  String get filterOptimal => 'Óptimo';
+
+  @override
+  String get filterSoon => 'Por caducar';
+
+  @override
+  String get filterExpired => 'Caducado';
+
+  @override
+  String productsCount(int count) {
+    return '$count productos';
+  }
+
+  @override
+  String get onboardingWelcome => 'Bienvenid@ a Alacena Bunker';
+
+  @override
+  String get onboardingTagline =>
+      'Tu bunker de alimentos para cualquier situación';
+
+  @override
+  String get onboardingStart => 'Iniciar';
+
+  @override
+  String get tabHome => 'Inicio';
+
+  @override
+  String get navAdd => 'Añadir';
 
   @override
   String get addItem => 'Añadir artículo';
@@ -59,10 +92,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get fieldExpiry => 'Caducidad';
 
   @override
-  String get precisionDay => 'Día exacto';
+  String get precisionDay => 'Día / Mes / Año';
 
   @override
-  String get precisionMonth => 'Solo mes';
+  String get precisionMonth => 'Mes / Año';
 
   @override
   String get save => 'Guardar';
@@ -152,10 +185,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get urgencyExpired => 'Caducado';
 
   @override
-  String get urgencySoon => 'Pronto';
+  String get urgencySoon => 'Por caducar';
 
   @override
-  String get urgencyOk => 'Ok';
+  String get urgencyOk => 'Óptimo';
 
   @override
   String get emptyActiveHint => 'Pulsa + para registrar el primero.';

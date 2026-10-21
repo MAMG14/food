@@ -80,7 +80,7 @@ void main() {
     expect(gateway.cancelAllCalls, 1);
     final (message, fireAt) = gateway.scheduled.values.single;
     expect(fireAt, DateTime(2026, 10, 6, 9));
-    expect(message.title, 'Food');
+    expect(message.title, 'Alacena Bunker');
     expect(message.body, 'Leche caduca el 8 de octubre de 2026');
     expect(message.lines, isEmpty);
   });

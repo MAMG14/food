@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food/app.dart';
+import 'package:food/data/app_preferences.dart';
 import 'package:food/data/food_database.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/data/reminder_log_repository.dart';
@@ -9,6 +10,7 @@ import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../test/notifications/fake_notification_gateway.dart';
@@ -31,16 +33,20 @@ Future<void> pumpUntil(
 Future<void> pumpUntilFound(WidgetTester tester, Finder finder) =>
     pumpUntil(tester, () => finder.evaluate().isNotEmpty, '$finder');
 
-/// Spec 003 T7/T9 end to end: startup permission, resync after creating an
-/// item, and tapping a reminder returns to Active from anywhere.
+/// Spec 003 T7/T9 end to end (updated for 004 Home shell).
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   final l10n = lookupAppLocalizations(const Locale('es'));
   late FoodDatabase db;
   late FakeNotificationGateway gateway;
+  late AppPreferences preferences;
 
   setUp(() async {
+    SharedPreferences.setMockInitialValues({
+      AppPreferences.onboardingCompletedKey: true,
+    });
+    preferences = AppPreferences(prefs: await SharedPreferences.getInstance());
     FoodDatabase.ensureInitialized();
     final path = p.join(await getDatabasesPath(), 'integration_app_flow.db');
     await deleteDatabase(path);
@@ -50,7 +56,7 @@ void main() {
 
   tearDown(() => db.close());
 
-  testWidgets('crear artículo programa aviso y tocar aviso abre Activos', (
+  testWidgets('crear artículo programa aviso y tocar aviso abre Por caducar', (
     tester,
   ) async {
     final repository = FoodItemRepository(db);
@@ -65,6 +71,7 @@ void main() {
           gateway: gateway,
           locale: const Locale('es'),
         ),
+        preferences: preferences,
         splashDuration: const Duration(milliseconds: 300),
       ),
     );
@@ -80,28 +87,34 @@ void main() {
     expect(gateway.permissionRequests, 1);
     expect((await settings.load()).permissionAsked, isTrue);
 
-    // Expiry defaults to today, so the reminder is late: next slot or now.
-    await tester.tap(find.byType(FloatingActionButton));
+    await tester.tap(find.text(l10n.navAdd));
     await pumpUntilFound(tester, nameField);
     await tester.enterText(nameField, 'Leche');
     FocusManager.instance.primaryFocus?.unfocus();
     await tester.pump(const Duration(milliseconds: 500));
     final save = find.widgetWithText(FilledButton, l10n.save);
-    await tester.scrollUntilVisible(save, 300, scrollable: find.byType(Scrollable).last);
+    await tester.scrollUntilVisible(
+      save,
+      300,
+      scrollable: find.byType(Scrollable).last,
+    );
     await tester.tap(save);
     await pumpUntil(tester, () => nameField.evaluate().isEmpty, 'form closed');
     await pumpUntilFound(tester, find.text('Leche'));
     await pumpUntil(tester, () => reminderBodies().isNotEmpty, 'reminder');
     expect(reminderBodies(), contains(startsWith('Leche caduca')));
 
-    // From the Expired view with the form open, a tap goes back to Active.
-    await tester.tap(find.text(l10n.tabExpired));
+    await tester.tap(find.text(l10n.filterExpired));
     await pumpUntilFound(tester, find.text(l10n.emptyExpired));
-    await tester.tap(find.byType(FloatingActionButton));
+    await tester.tap(find.text(l10n.navAdd));
     await pumpUntilFound(tester, nameField);
 
     gateway.tapController.add(null);
-    await pumpUntil(tester, () => nameField.evaluate().isEmpty, 'form closed by tap');
+    await pumpUntil(
+      tester,
+      () => nameField.evaluate().isEmpty,
+      'form closed by tap',
+    );
     await pumpUntilFound(tester, find.text('Leche'));
   });
 }

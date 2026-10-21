@@ -3,56 +3,87 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/domain/expiry.dart';
+import 'package:food/domain/home_filter.dart';
 import 'package:food/domain/models/enums.dart';
 import 'package:food/domain/models/food_item.dart';
+import 'package:food/domain/urgency.dart';
 import 'package:food/l10n/app_localizations.dart';
-import 'package:food/ui/home/food_item_tile.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
+import 'package:food/ui/home/food_item_tile.dart';
 import 'package:food/ui/item/food_item_form_page.dart';
 import 'package:food/ui/settings/reminder_settings_page.dart';
+import 'package:food/ui/theme/food_theme.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({
     super.key,
     required this.repository,
     required this.reminders,
-    required this.showActive,
+    required this.reminderFilter,
   });
 
   final FoodItemRepository repository;
   final ReminderScheduler reminders;
 
-  /// Notifies when the inventory must switch to Active (reminder tapped).
-  final Listenable showActive;
+  /// Reminder tap sets [HomeFilter.soon].
+  final ValueNotifier<HomeFilter?> reminderFilter;
 
   @override
-  State<InventoryPage> createState() => _InventoryPageState();
+  InventoryPageState createState() => InventoryPageState();
 }
 
-class _InventoryPageState extends State<InventoryPage> {
-  InventoryView _view = InventoryView.active;
+class InventoryPageState extends State<InventoryPage> {
+  HomeFilter _filter = HomeFilter.optimal;
   SortMode _sortMode = SortMode.expiry;
   List<FoodItem> _items = [];
+  HomeFilterCounts _counts = const HomeFilterCounts(
+    optimal: 0,
+    soon: 0,
+    expired: 0,
+  );
   bool _loading = true;
   late DateTime _today;
+  var _filterInitialized = false;
 
   @override
   void initState() {
     super.initState();
     _today = dateOnly(DateTime.now());
-    widget.showActive.addListener(_onShowActive);
-    _reload();
+    widget.reminderFilter.addListener(_onReminderFilter);
+    unawaited(reload());
   }
 
   @override
   void dispose() {
-    widget.showActive.removeListener(_onShowActive);
+    widget.reminderFilter.removeListener(_onReminderFilter);
     super.dispose();
   }
 
-  void _onShowActive() {
-    setState(() => _view = InventoryView.active);
-    _reload();
+  void _onReminderFilter() {
+    final pending = widget.reminderFilter.value;
+    if (pending == null) return;
+    setState(() => _filter = pending);
+    widget.reminderFilter.value = null;
+    unawaited(reload());
+  }
+
+  Future<void> reload() async {
+    setState(() => _loading = true);
+    _today = dateOnly(DateTime.now());
+    final all = await widget.repository.getAll();
+    final counts = countByHomeFilter(all, _today);
+    if (!_filterInitialized) {
+      _filter = defaultHomeFilter(counts);
+      _filterInitialized = true;
+    }
+    final filtered = itemsForHomeFilter(all, _filter, _today);
+    final sorted = sortItems(filtered, _sortMode, _today);
+    if (!mounted) return;
+    setState(() {
+      _counts = counts;
+      _items = sorted;
+      _loading = false;
+    });
   }
 
   Future<void> _openReminderSettings() async {
@@ -61,19 +92,6 @@ class _InventoryPageState extends State<InventoryPage> {
         builder: (_) => ReminderSettingsPage(reminders: widget.reminders),
       ),
     );
-  }
-
-  Future<void> _reload() async {
-    setState(() => _loading = true);
-    _today = dateOnly(DateTime.now());
-    final all = await widget.repository.getAll();
-    final filtered = filterByView(all, _view, _today);
-    final sorted = sortItems(filtered, _sortMode, _today);
-    if (!mounted) return;
-    setState(() {
-      _items = sorted;
-      _loading = false;
-    });
   }
 
   Future<void> _openForm({FoodItem? item}) async {
@@ -87,8 +105,21 @@ class _InventoryPageState extends State<InventoryPage> {
     );
     if (changed == true && mounted) {
       unawaited(widget.reminders.resync());
-      await _reload();
+      await reload();
     }
+  }
+
+  void _selectFilter(HomeFilter filter) {
+    setState(() => _filter = filter);
+    unawaited(reload());
+  }
+
+  String _emptyMessage(AppLocalizations l10n) {
+    return switch (_filter) {
+      HomeFilter.optimal => l10n.emptyActive,
+      HomeFilter.soon => l10n.emptySoon,
+      HomeFilter.expired => l10n.emptyExpired,
+    };
   }
 
   @override
@@ -103,14 +134,14 @@ class _InventoryPageState extends State<InventoryPage> {
           IconButton(
             onPressed: _openReminderSettings,
             tooltip: l10n.reminderSettingsTitle,
-            icon: const Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.settings_outlined),
           ),
           PopupMenuButton<SortMode>(
             initialValue: _sortMode,
             tooltip: l10n.sortByExpiry,
             onSelected: (mode) {
               setState(() => _sortMode = mode);
-              _reload();
+              unawaited(reload());
             },
             itemBuilder: (context) => [
               PopupMenuItem(
@@ -129,28 +160,39 @@ class _InventoryPageState extends State<InventoryPage> {
       body: Column(
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
-            child: SizedBox(
-              width: double.infinity,
-              child: SegmentedButton<InventoryView>(
-                segments: [
-                  ButtonSegment(
-                    value: InventoryView.active,
-                    label: Text(l10n.tabActive),
-                    icon: const Icon(Icons.kitchen_outlined, size: 18),
+            padding: const EdgeInsets.fromLTRB(12, 12, 12, 8),
+            child: Row(
+              children: [
+                Expanded(
+                  child: _FilterCard(
+                    label: l10n.filterOptimal,
+                    count: _counts.optimal,
+                    selected: _filter == HomeFilter.optimal,
+                    accent: urgencyForeground(scheme, ExpiryUrgency.normal),
+                    onTap: () => _selectFilter(HomeFilter.optimal),
                   ),
-                  ButtonSegment(
-                    value: InventoryView.expired,
-                    label: Text(l10n.tabExpired),
-                    icon: const Icon(Icons.event_busy_outlined, size: 18),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _FilterCard(
+                    label: l10n.filterSoon,
+                    count: _counts.soon,
+                    selected: _filter == HomeFilter.soon,
+                    accent: urgencyForeground(scheme, ExpiryUrgency.high),
+                    onTap: () => _selectFilter(HomeFilter.soon),
                   ),
-                ],
-                selected: {_view},
-                onSelectionChanged: (values) {
-                  setState(() => _view = values.first);
-                  _reload();
-                },
-              ),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: _FilterCard(
+                    label: l10n.filterExpired,
+                    count: _counts.expired,
+                    selected: _filter == HomeFilter.expired,
+                    accent: urgencyForeground(scheme, ExpiryUrgency.critical),
+                    onTap: () => _selectFilter(HomeFilter.expired),
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -164,37 +206,24 @@ class _InventoryPageState extends State<InventoryPage> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Icon(
-                                _view == InventoryView.active
-                                    ? Icons.inventory_2_outlined
-                                    : Icons.check_circle_outline,
+                                Icons.inventory_2_outlined,
                                 size: 56,
                                 color: scheme.outline,
                               ),
                               const SizedBox(height: 16),
                               Text(
-                                _view == InventoryView.active
-                                    ? l10n.emptyActive
-                                    : l10n.emptyExpired,
+                                _emptyMessage(l10n),
                                 textAlign: TextAlign.center,
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
-                              if (_view == InventoryView.active) ...[
-                                const SizedBox(height: 8),
-                                Text(
-                                  l10n.emptyActiveHint,
-                                  textAlign: TextAlign.center,
-                                  style: Theme.of(context).textTheme.bodyMedium
-                                      ?.copyWith(color: scheme.onSurfaceVariant),
-                                ),
-                              ],
                             ],
                           ),
                         ),
                       )
                     : RefreshIndicator(
-                        onRefresh: _reload,
+                        onRefresh: reload,
                         child: ListView.builder(
-                          padding: const EdgeInsets.only(top: 4, bottom: 88),
+                          padding: const EdgeInsets.only(top: 4, bottom: 24),
                           itemCount: _items.length,
                           itemBuilder: (context, index) {
                             final item = _items[index];
@@ -209,11 +238,76 @@ class _InventoryPageState extends State<InventoryPage> {
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: () => _openForm(),
-        tooltip: l10n.addItem,
-        icon: const Icon(Icons.add),
-        label: Text(l10n.addItem),
+    );
+  }
+}
+
+class _FilterCard extends StatelessWidget {
+  const _FilterCard({
+    required this.label,
+    required this.count,
+    required this.selected,
+    required this.accent,
+    required this.onTap,
+  });
+
+  final String label;
+  final int count;
+  final bool selected;
+  final Color accent;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final border = selected ? accent : scheme.outlineVariant;
+
+    return Material(
+      color: scheme.surfaceContainerLowest,
+      borderRadius: BorderRadius.circular(12),
+      child: InkWell(
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(12),
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 10),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(12),
+            border: Border.all(color: border, width: selected ? 2 : 1),
+          ),
+          child: Column(
+            children: [
+              Text(
+                l10n.productsCount(count),
+                style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              const SizedBox(height: 6),
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(vertical: 4),
+                decoration: BoxDecoration(
+                  color: accent.withValues(alpha: 0.15),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Text(
+                  label,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                    color: accent,
+                    fontWeight: FontWeight.w600,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

@@ -19,17 +19,18 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T5. SplashGate con Lottie + fallback.** RF-2
   - Hecho cuando: Lottie ~1,5 s en arranque; tests pueden acortar/saltar; si falla el asset, frame estático y continúa ≤ 2 s.
 
-- [ ] **T6. Onboarding + cableado de arranque.** RF-4–6
+- [x] **T6. Onboarding + cableado de arranque.** RF-4–6
   - Hecho cuando: instalación limpia → onboarding → Iniciar → Home; siguientes arranques → Home; upgrade con DB previa (con o sin datos) → sin onboarding.
 
-- [ ] **T7. HomeShell: tabs Home / Añadir.** RF-14
+- [x] **T7. HomeShell: tabs Home / Añadir.** RF-14
   - Hecho cuando: tab Añadir hace `push` del alta; al guardar o cancelar/pop el tab vuelve a Home; retirados FAB de alta y `SegmentedButton` Activos/Caducados del inventario.
 
-- [ ] **T8. Home: tarjetas, filtro, empty, orden, ajustes + tap recordatorio.** RF-7–13, RF-16
+- [x] **T8. Home: tarjetas, filtro, empty, orden, ajustes + tap recordatorio.** RF-7–13, RF-16
   - Hecho cuando: tarjetas cuentan y filtran; empty i18n; orden 001; icono abre ajustes 003; tap de notificación fija filtro `soon` y tab Home.
 
-- [ ] **T9. Formulario alineado a Figma (campos 001) + ARB de UI nueva.** RF-15, RF-18
+- [x] **T9. Formulario alineado a Figma (campos 001) + ARB de UI nueva.** RF-15, RF-18
   - Hecho cuando: alta/edición con layout Figma + campos restantes; validaciones 001; cadenas nuevas en ARB (marca, onboarding, tarjetas, empty).
 
 - [ ] **T10. Cierre visual + suite.** Criterios de finalización, RNF-5
   - Hecho cuando: `flutter analyze` + `flutter test` en verde; capturas Home/Add/splash vs Figma; punto de control: 1ª instalación vs upgrade y tap → Por caducar; `MEMORY.md` actualizado; spec → `implementada` tras OK del usuario.
+  - Código/suite listos. Falta: verificación visual del usuario en dispositivo/simulador.

@@ -5,17 +5,17 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 ## Producto hoy
 
 - Inventario local con caducidad (spec 001).
-- UI teal v1 con urgencia de caducidad y splash de marca provisional (spec 002).
-- Recordatorios con notificación local, configurables en general y por categoría (spec 003).
-- Fuera por ahora: nube, login, espacios casa/negocio, marca definitiva.
+- Recordatorios locales configurables (spec 003).
+- UI **Alacena Bunker** (spec 004): marca, Lottie splash, onboarding 1ª vez, Home con tarjetas Óptimo / Por caducar / Caducado, tabs Home/Añadir.
+- Fuera por ahora: nube, login, espacios casa/negocio, cambio de `applicationId`.
 
 ## Dónde mirar
 
 - Specs y progreso: `specs/` (`spec.md` → `plan.md` → `tasks.md`).
-- Decisiones tomadas en implementación o de proceso: `docs/decisions.md`.
-- Flujo de agentes (hooks, revisor, commits): `AGENTS.md`.
+- Diseño Figma: `SByf2lLOAvL28x5m7cPgda`; Lottie: `assets/lottie/alacena_bunker_splash.json`.
+- Decisiones: `docs/decisions.md`.
 
 ## Próximo paso
 
-- Spec 004: plan/tareas **aprobados**; implementación en curso (`specs/004-alacena-bunker-ui/tasks.md`).
-- Spec 003: código listo; verificación manual aplazada (salvo puente tap → filtro `soon` en 004).
+- Spec 004 **T10**: punto de control — probar en simulador/dispositivo (splash Lottie, onboarding limpio, Home/filtros/Añadir, ajustes, upgrade sin onboarding). Tras OK del usuario → `Estado: implementada`.
+- Spec 003: verificación manual restante aplazada.

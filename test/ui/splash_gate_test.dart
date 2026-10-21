@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:food/app.dart';
+import 'package:food/data/app_preferences.dart';
 import 'package:food/data/food_database.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/data/reminder_log_repository.dart';
@@ -11,6 +12,7 @@ import 'package:food/notifications/reminder_scheduler.dart';
 import 'package:food/ui/home/inventory_page.dart';
 import 'package:food/ui/splash/splash_gate.dart';
 import 'package:path/path.dart' as p;
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 
 import '../notifications/fake_notification_gateway.dart';
@@ -25,8 +27,13 @@ void main() {
   late FoodDatabase foodDb;
   late FoodItemRepository repo;
   late ReminderScheduler reminders;
+  late AppPreferences preferences;
 
   setUp(() async {
+    SharedPreferences.setMockInitialValues({
+      AppPreferences.onboardingCompletedKey: true,
+    });
+    preferences = AppPreferences(prefs: await SharedPreferences.getInstance());
     tempDir = await Directory.systemTemp.createTemp('food_splash_test_');
     foodDb = FoodDatabase(
       databaseFactory: databaseFactoryFfi,
@@ -51,7 +58,11 @@ void main() {
 
   testWidgets('splash shows then fades to inventory', (tester) async {
     await tester.pumpWidget(
-      FoodApp(repository: repo, reminders: reminders),
+      FoodApp(
+        repository: repo,
+        reminders: reminders,
+        preferences: preferences,
+      ),
     );
     await tester.pump();
 
@@ -72,6 +83,7 @@ void main() {
       FoodApp(
         repository: repo,
         reminders: reminders,
+        preferences: preferences,
         splashDuration: Duration.zero,
       ),
     );

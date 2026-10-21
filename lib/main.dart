@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:food/app.dart';
+import 'package:food/data/app_preferences.dart';
 import 'package:food/data/food_database.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/data/reminder_log_repository.dart';
@@ -12,8 +13,17 @@ import 'package:food/notifications/reminder_scheduler.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   FoodDatabase.ensureInitialized();
+
+  final databaseFileExisted = await FoodDatabase.defaultDatabaseFileExists();
   final database = FoodDatabase();
   final repository = FoodItemRepository(database);
+  final items = await repository.getAll();
+
+  final preferences = AppPreferences();
+  final showOnboarding = await preferences.shouldShowOnboarding(
+    databaseFileExisted: databaseFileExisted,
+    itemCount: items.length,
+  );
 
   final l10n = lookupAppLocalizations(appLocale);
   final gateway = LocalNotificationGateway(
@@ -23,7 +33,6 @@ Future<void> main() async {
   try {
     await gateway.init();
   } catch (e) {
-    // Reminders are optional: the inventory must still open.
     debugPrint('Notification init failed: $e');
   }
 
@@ -35,5 +44,12 @@ Future<void> main() async {
     locale: appLocale,
   );
 
-  runApp(FoodApp(repository: repository, reminders: reminders));
+  runApp(
+    FoodApp(
+      repository: repository,
+      reminders: reminders,
+      preferences: preferences,
+      showOnboarding: showOnboarding,
+    ),
+  );
 }

@@ -140,6 +140,66 @@ abstract class AppLocalizations {
   /// **'No expired items.'**
   String get emptyExpired;
 
+  /// No description provided for @emptySoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Nothing expiring in the next few days.'**
+  String get emptySoon;
+
+  /// No description provided for @filterOptimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Optimal'**
+  String get filterOptimal;
+
+  /// No description provided for @filterSoon.
+  ///
+  /// In en, this message translates to:
+  /// **'Expiring soon'**
+  String get filterSoon;
+
+  /// No description provided for @filterExpired.
+  ///
+  /// In en, this message translates to:
+  /// **'Expired'**
+  String get filterExpired;
+
+  /// No description provided for @productsCount.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} products'**
+  String productsCount(int count);
+
+  /// No description provided for @onboardingWelcome.
+  ///
+  /// In en, this message translates to:
+  /// **'Welcome to Alacena Bunker'**
+  String get onboardingWelcome;
+
+  /// No description provided for @onboardingTagline.
+  ///
+  /// In en, this message translates to:
+  /// **'Your food bunker for any situation'**
+  String get onboardingTagline;
+
+  /// No description provided for @onboardingStart.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get onboardingStart;
+
+  /// No description provided for @tabHome.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get tabHome;
+
+  /// No description provided for @navAdd.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get navAdd;
+
   /// No description provided for @addItem.
   ///
   /// In en, this message translates to:
@@ -197,13 +257,13 @@ abstract class AppLocalizations {
   /// No description provided for @precisionDay.
   ///
   /// In en, this message translates to:
-  /// **'Exact day'**
+  /// **'Day / Month / Year'**
   String get precisionDay;
 
   /// No description provided for @precisionMonth.
   ///
   /// In en, this message translates to:
-  /// **'Month only'**
+  /// **'Month / Year'**
   String get precisionMonth;
 
   /// No description provided for @save.
@@ -383,13 +443,13 @@ abstract class AppLocalizations {
   /// No description provided for @urgencySoon.
   ///
   /// In en, this message translates to:
-  /// **'Soon'**
+  /// **'Expiring soon'**
   String get urgencySoon;
 
   /// No description provided for @urgencyOk.
   ///
   /// In en, this message translates to:
-  /// **'OK'**
+  /// **'Optimal'**
   String get urgencyOk;
 
   /// No description provided for @emptyActiveHint.

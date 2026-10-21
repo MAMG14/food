@@ -43,5 +43,6 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
   1. MCP oficial `dart mcp-server` en `.cursor/mcp.json` (lanzar app, hot reload, inspector de widgets, errores en tiempo de ejecución).
   2. `tool/screenshot.sh` para capturar el simulador iOS o un dispositivo Android en `build/screens/`.
   3. La skill `ui-design` exige mirar capturas reales en cada cambio visible y seguir las referencias del usuario en `docs/design/referencias/`.
-- **Descartado por ahora:** Figma + su MCP (requiere diseños en Figma; se reconsidera si hace falta más control); golden tests (útiles cuando haya un diseño estable que proteger).
-- **Consecuencias:** el rediseño en sí sí es producto → irá en una spec propia (“diseño v2”) basada en las referencias.
+- **Descartado por ahora:** golden tests (útiles cuando haya un diseño estable que proteger).
+- **Actualización (2026-10-21):** MCP Figma remoto en `.cursor/mcp.json`. Spec 004 implementa UI Alacena Bunker (Lottie splash, onboarding, Home con filtros, tabs). Seed de tema `#2E7D4F`.
+- **Consecuencias:** la marca visible y el flujo de arranque pasan a 004; el `applicationId` sigue siendo `com.example.food` hasta otra spec.

@@ -31,6 +31,38 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyExpired => 'No expired items.';
 
   @override
+  String get emptySoon => 'Nothing expiring in the next few days.';
+
+  @override
+  String get filterOptimal => 'Optimal';
+
+  @override
+  String get filterSoon => 'Expiring soon';
+
+  @override
+  String get filterExpired => 'Expired';
+
+  @override
+  String productsCount(int count) {
+    return '$count products';
+  }
+
+  @override
+  String get onboardingWelcome => 'Welcome to Alacena Bunker';
+
+  @override
+  String get onboardingTagline => 'Your food bunker for any situation';
+
+  @override
+  String get onboardingStart => 'Start';
+
+  @override
+  String get tabHome => 'Home';
+
+  @override
+  String get navAdd => 'Add';
+
+  @override
   String get addItem => 'Add item';
 
   @override
@@ -58,10 +90,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get fieldExpiry => 'Expiry';
 
   @override
-  String get precisionDay => 'Exact day';
+  String get precisionDay => 'Day / Month / Year';
 
   @override
-  String get precisionMonth => 'Month only';
+  String get precisionMonth => 'Month / Year';
 
   @override
   String get save => 'Save';
@@ -152,10 +184,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get urgencyExpired => 'Expired';
 
   @override
-  String get urgencySoon => 'Soon';
+  String get urgencySoon => 'Expiring soon';
 
   @override
-  String get urgencyOk => 'OK';
+  String get urgencyOk => 'Optimal';
 
   @override
   String get emptyActiveHint => 'Tap + to add the first one.';
