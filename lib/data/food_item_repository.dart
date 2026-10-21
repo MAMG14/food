@@ -1,14 +1,18 @@
+import 'package:food/data/food_database.dart';
+import 'package:food/data/product_image_store.dart';
 import 'package:food/domain/models/enums.dart';
 import 'package:food/domain/models/food_item.dart';
 import 'package:sqflite/sqflite.dart';
 
-import 'food_database.dart';
-
 /// CRUD for [FoodItem] rows in SQLite.
 class FoodItemRepository {
-  FoodItemRepository(this._foodDatabase);
+  FoodItemRepository(
+    this._foodDatabase, {
+    ProductImageStore? imageStore,
+  }) : _imageStore = imageStore ?? ProductImageStore();
 
   final FoodDatabase _foodDatabase;
+  final ProductImageStore _imageStore;
 
   Future<Database> get _db => _foodDatabase.database;
 
@@ -59,12 +63,28 @@ class FoodItemRepository {
     return item;
   }
 
+  /// Sets [imagePath] for an existing item (after async download).
+  Future<void> updateImagePath(int id, String? imagePath) async {
+    final now = DateTime.now().toIso8601String();
+    await (await _db).update(
+      'food_items',
+      {
+        'image_path': imagePath,
+        'updated_at': now,
+      },
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
   Future<void> delete(int id) async {
+    final existing = await getById(id);
     await (await _db).delete(
       'food_items',
       where: 'id = ?',
       whereArgs: [id],
     );
+    await _imageStore.deleteIfExists(existing?.imagePath);
   }
 
   Map<String, Object?> _toRow(FoodItem item) {
@@ -77,6 +97,8 @@ class FoodItemRepository {
       'category': item.category.name,
       'notes': item.notes,
       'location': item.location.name,
+      'barcode': item.barcode,
+      'image_path': item.imagePath,
     };
   }
 
@@ -93,6 +115,8 @@ class FoodItemRepository {
       category: Category.values.byName(row['category'] as String),
       notes: row['notes'] as String?,
       location: StorageLocation.values.byName(row['location'] as String),
+      barcode: row['barcode'] as String?,
+      imagePath: row['image_path'] as String?,
     );
   }
 }

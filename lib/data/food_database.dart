@@ -7,6 +7,7 @@ import 'package:sqflite/sqflite.dart';
 ///
 /// - v1: `food_items` (spec 001).
 /// - v2: reminder settings + reminder log tables (spec 003).
+/// - v3: `barcode` + `image_path` on `food_items` (spec 005).
 class FoodDatabase {
   FoodDatabase({
     this._databaseFactory,
@@ -21,7 +22,7 @@ class FoodDatabase {
   Database? _db;
 
   static const dbName = 'food.db';
-  static const schemaVersion = 2;
+  static const schemaVersion = 3;
 
   static const createFoodItemsSql = '''
 CREATE TABLE food_items (
@@ -34,6 +35,8 @@ CREATE TABLE food_items (
   category TEXT NOT NULL,
   notes TEXT,
   location TEXT NOT NULL,
+  barcode TEXT,
+  image_path TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL
 )
@@ -109,6 +112,7 @@ CREATE TABLE reminder_log (
         onUpgrade: (db, oldVersion, newVersion) async {
           // Only additive changes: never drop or rewrite food_items.
           if (oldVersion < 2) await _createV2(db);
+          if (oldVersion < 3) await _upgradeToV3(db);
         },
       ),
     );
@@ -118,6 +122,17 @@ CREATE TABLE reminder_log (
     await db.execute(_createReminderSettingsSql);
     await db.execute(_createCategoryRulesSql);
     await db.execute(_createReminderLogSql);
+  }
+
+  static Future<void> _upgradeToV3(Database db) async {
+    final info = await db.rawQuery('PRAGMA table_info(food_items)');
+    final columns = info.map((row) => row['name'] as String).toSet();
+    if (!columns.contains('barcode')) {
+      await db.execute('ALTER TABLE food_items ADD COLUMN barcode TEXT');
+    }
+    if (!columns.contains('image_path')) {
+      await db.execute('ALTER TABLE food_items ADD COLUMN image_path TEXT');
+    }
   }
 
   Future<void> close() async {

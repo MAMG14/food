@@ -12,6 +12,8 @@ class FoodItem {
     required this.category,
     this.notes,
     required this.location,
+    this.barcode,
+    this.imagePath,
   });
 
   /// Local database id; null before the item is persisted.
@@ -34,6 +36,12 @@ class FoodItem {
 
   final StorageLocation location;
 
+  /// EAN/UPC when the item came from a barcode scan (optional).
+  final String? barcode;
+
+  /// Absolute local path to a downloaded product image (optional).
+  final String? imagePath;
+
   FoodItem copyWith({
     int? id,
     String? name,
@@ -44,7 +52,11 @@ class FoodItem {
     Category? category,
     String? notes,
     StorageLocation? location,
+    String? barcode,
+    String? imagePath,
     bool clearNotes = false,
+    bool clearBarcode = false,
+    bool clearImagePath = false,
   }) {
     return FoodItem(
       id: id ?? this.id,
@@ -56,6 +68,8 @@ class FoodItem {
       category: category ?? this.category,
       notes: clearNotes ? null : (notes ?? this.notes),
       location: location ?? this.location,
+      barcode: clearBarcode ? null : (barcode ?? this.barcode),
+      imagePath: clearImagePath ? null : (imagePath ?? this.imagePath),
     );
   }
 }

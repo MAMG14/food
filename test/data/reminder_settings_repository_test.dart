@@ -110,7 +110,22 @@ void main() {
       options: OpenDatabaseOptions(
         version: 1,
         onCreate: (db, _) async {
-          await db.execute(FoodDatabase.createFoodItemsSql);
+          // Historical v1 schema (before barcode / image_path).
+          await db.execute('''
+CREATE TABLE food_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  name TEXT NOT NULL,
+  expiry_precision TEXT NOT NULL,
+  expiry_value TEXT NOT NULL,
+  quantity REAL NOT NULL,
+  unit TEXT NOT NULL,
+  category TEXT NOT NULL,
+  notes TEXT,
+  location TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  updated_at TEXT NOT NULL
+)
+''');
           await db.insert('food_items', {
             'name': 'Leche',
             'expiry_precision': 'day',

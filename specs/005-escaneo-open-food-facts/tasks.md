@@ -7,7 +7,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T1. Mapeo puro OFF → borrador + tests.** RF-9–11, RNF-3
   - Hecho cuando: `parseOffQuantity`, `mapOffCategories`, `buildProductName` / `OffProductDraft` cubiertos en `flutter test` (cantidad válida/inválida, tags→categoría, nombre+marca, sin nombre).
 
-- [ ] **T2. Schema v3 + repository (barcode, image_path).** RNF-2, RF-15
+- [x] **T2. Schema v3 + repository (barcode, image_path).** RNF-2, RF-15
   - Hecho cuando: migración v2→v3 no pierde artículos; insert/update/get incluyen barcode e imagePath; al borrar se elimina el archivo de imagen si existía (store fake o temp).
 
 - [ ] **T3. Cliente OFF (HTTP) + tests con mock.** RF-4–8, RNF-5
