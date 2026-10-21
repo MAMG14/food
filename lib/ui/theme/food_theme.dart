@@ -5,9 +5,9 @@ import 'package:food/domain/urgency.dart';
 /// Brand seed (Alacena Bunker) for in-app chrome.
 const foodSeedColor = Color(0xFF2E7D4F);
 
-/// Status / nav bar for light screens (readable icons + no black strip).
+/// Status / nav bar for light screens (opaque so icons stay readable).
 const appSystemOverlayStyle = SystemUiOverlayStyle(
-  statusBarColor: Colors.transparent,
+  statusBarColor: Color(0xFFF7F9F7),
   statusBarIconBrightness: Brightness.dark,
   statusBarBrightness: Brightness.light,
   systemNavigationBarColor: Colors.white,

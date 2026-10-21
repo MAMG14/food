@@ -14,7 +14,12 @@ import 'package:food/ui/theme/food_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  // Light status bar icons on a light app chrome (avoids black bar / missing clock).
+  // Prefer the classic (non edge-to-edge) layout so the status bar and DEBUG
+  // banner stay fully visible, as before the splash work.
+  await SystemChrome.setEnabledSystemUIMode(
+    SystemUiMode.manual,
+    overlays: SystemUiOverlay.values,
+  );
   SystemChrome.setSystemUIOverlayStyle(appSystemOverlayStyle);
   FoodDatabase.ensureInitialized();
 

@@ -108,9 +108,11 @@ class SplashView extends StatelessWidget {
     final iconRect = iconRectForFill(screen);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark.copyWith(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: bg,
+      value: const SystemUiOverlayStyle(
+        statusBarColor: splashCanvasColor,
+        statusBarIconBrightness: Brightness.dark,
+        statusBarBrightness: Brightness.light,
+        systemNavigationBarColor: splashCanvasColor,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: ColoredBox(
