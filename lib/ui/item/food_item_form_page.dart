@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:food/data/food_item_repository.dart';
 import 'package:food/domain/models/enums.dart';
@@ -309,6 +311,26 @@ class _FoodItemFormPageState extends State<FoodItemFormPage> {
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 32),
         children: [
+          if (widget.item?.imagePath != null &&
+              widget.item!.imagePath!.isNotEmpty) ...[
+            ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: AspectRatio(
+                aspectRatio: 1.4,
+                child: Image.file(
+                  File(widget.item!.imagePath!),
+                  fit: BoxFit.cover,
+                  errorBuilder: (_, _, _) => ColoredBox(
+                    color: Theme.of(context).colorScheme.surfaceContainerHighest,
+                    child: const Center(
+                      child: Icon(Icons.image_not_supported_outlined, size: 48),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 16),
+          ],
           sectionTitle(l10n.sectionIdentity),
           TextField(
             controller: _nameController,
