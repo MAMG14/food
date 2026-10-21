@@ -65,6 +65,8 @@ class _SplashGateState extends State<SplashGate> {
   void _finish() {
     if (_completed || !mounted) return;
     _completed = true;
+    // Restore app chrome after splash AnnotatedRegion.
+    SystemChrome.setSystemUIOverlayStyle(appSystemOverlayStyle);
     setState(() => _showSplash = false);
   }
 

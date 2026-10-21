@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food/domain/urgency.dart';
 
 /// Brand seed (Alacena Bunker) for in-app chrome.
 const foodSeedColor = Color(0xFF2E7D4F);
+
+/// Status / nav bar for light screens (readable icons + no black strip).
+const appSystemOverlayStyle = SystemUiOverlayStyle(
+  statusBarColor: Colors.transparent,
+  statusBarIconBrightness: Brightness.dark,
+  statusBarBrightness: Brightness.light,
+  systemNavigationBarColor: Colors.white,
+  systemNavigationBarIconBrightness: Brightness.dark,
+  systemNavigationBarDividerColor: Colors.transparent,
+);
 
 /// Splash / onboarding canvas from Figma (cream).
 const splashCanvasColor = Color(0xFFF7F3EE);
@@ -34,6 +45,7 @@ ThemeData buildFoodTheme() {
       foregroundColor: scheme.onSurface,
       elevation: 0,
       scrolledUnderElevation: 1,
+      systemOverlayStyle: appSystemOverlayStyle,
     ),
     cardTheme: CardThemeData(
       elevation: 0,

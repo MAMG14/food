@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:food/app.dart';
 import 'package:food/data/app_preferences.dart';
 import 'package:food/data/food_database.dart';
@@ -9,9 +10,12 @@ import 'package:food/l10n/app_locale.dart';
 import 'package:food/l10n/app_localizations.dart';
 import 'package:food/notifications/local_notification_gateway.dart';
 import 'package:food/notifications/reminder_scheduler.dart';
+import 'package:food/ui/theme/food_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // Light status bar icons on a light app chrome (avoids black bar / missing clock).
+  SystemChrome.setSystemUIOverlayStyle(appSystemOverlayStyle);
   FoodDatabase.ensureInitialized();
 
   final databaseFileExisted = await FoodDatabase.defaultDatabaseFileExists();
