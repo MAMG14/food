@@ -1,6 +1,6 @@
 {
   "@@locale": "es",
-  "appTitle": "Food",
+  "appTitle": "Alacena Bunker",
   "tabActive": "Activos",
   "tabExpired": "Caducados",
   "sortByName": "Ordenar por nombre",
@@ -50,7 +50,7 @@
   "urgencySoon": "Pronto",
   "urgencyOk": "Ok",
   "emptyActiveHint": "Pulsa + para registrar el primero.",
-  "splashTagline": "Caducidad a la vista",
+  "splashTagline": "Tu bunker de alimentos para cualquier situación",
   "reminderChannelName": "Avisos de caducidad",
   "reminderChannelDescription": "Avisos antes de que caduquen tus alimentos",
   "reminderWhenToday": "hoy",
@@ -70,6 +70,6 @@
   "reminderLeadDays": "{days, plural, =1{1 día antes} other{{days} días antes}}",
   "reminderRuleGeneral": "Como la general ({lead})",
   "reminderRuleOff": "Sin aviso",
-  "reminderPermissionDenied": "Las notificaciones de Food están desactivadas, así que los avisos no llegarán.",
+  "reminderPermissionDenied": "Las notificaciones de Alacena Bunker están desactivadas, así que los avisos no llegarán.",
   "reminderOpenSettings": "Activar en ajustes"
 }

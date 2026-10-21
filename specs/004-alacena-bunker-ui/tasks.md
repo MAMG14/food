@@ -13,7 +13,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T3. Dependencias y assets.** RNF-4
   - Hecho cuando: `lottie` + `shared_preferences` en `pubspec.yaml`; Lottie registrado; `flutter pub get` ok.
 
-- [ ] **T4. Tema Alacena Bunker + display name + splash nativo.** RF-1, RF-3, RF-17
+- [x] **T4. Tema Alacena Bunker + display name + splash nativo.** RF-1, RF-3, RF-17
   - Hecho cuando: tema verde alineado a Figma; label Android/iOS “Alacena Bunker”; splash nativo coherente; analyze limpio.
 
 - [ ] **T5. SplashGate con Lottie + fallback.** RF-2

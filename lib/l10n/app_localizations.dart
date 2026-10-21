@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Food'**
+  /// **'Alacena Bunker'**
   String get appTitle;
 
   /// No description provided for @tabActive.
@@ -401,7 +401,7 @@ abstract class AppLocalizations {
   /// No description provided for @splashTagline.
   ///
   /// In en, this message translates to:
-  /// **'Expiry at a glance'**
+  /// **'Your food bunker for any situation'**
   String get splashTagline;
 
   /// No description provided for @reminderChannelName.
@@ -521,7 +521,7 @@ abstract class AppLocalizations {
   /// No description provided for @reminderPermissionDenied.
   ///
   /// In en, this message translates to:
-  /// **'Notifications are turned off for Food, so reminders won\'t arrive.'**
+  /// **'Notifications are turned off for Alacena Bunker, so reminders won\'t arrive.'**
   String get reminderPermissionDenied;
 
   /// No description provided for @reminderOpenSettings.

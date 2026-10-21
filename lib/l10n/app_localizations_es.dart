@@ -10,7 +10,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'Food';
+  String get appTitle => 'Alacena Bunker';
 
   @override
   String get tabActive => 'Activos';
@@ -161,7 +161,7 @@ class AppLocalizationsEs extends AppLocalizations {
   String get emptyActiveHint => 'Pulsa + para registrar el primero.';
 
   @override
-  String get splashTagline => 'Caducidad a la vista';
+  String get splashTagline => 'Tu bunker de alimentos para cualquier situación';
 
   @override
   String get reminderChannelName => 'Avisos de caducidad';
@@ -249,7 +249,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get reminderPermissionDenied =>
-      'Las notificaciones de Food están desactivadas, así que los avisos no llegarán.';
+      'Las notificaciones de Alacena Bunker están desactivadas, así que los avisos no llegarán.';
 
   @override
   String get reminderOpenSettings => 'Activar en ajustes';

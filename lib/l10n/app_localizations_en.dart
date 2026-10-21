@@ -10,7 +10,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Food';
+  String get appTitle => 'Alacena Bunker';
 
   @override
   String get tabActive => 'Active';
@@ -161,7 +161,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get emptyActiveHint => 'Tap + to add the first one.';
 
   @override
-  String get splashTagline => 'Expiry at a glance';
+  String get splashTagline => 'Your food bunker for any situation';
 
   @override
   String get reminderChannelName => 'Expiry reminders';
@@ -247,7 +247,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get reminderPermissionDenied =>
-      'Notifications are turned off for Food, so reminders won\'t arrive.';
+      'Notifications are turned off for Alacena Bunker, so reminders won\'t arrive.';
 
   @override
   String get reminderOpenSettings => 'Turn on in settings';

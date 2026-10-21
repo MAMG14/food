@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:food/domain/urgency.dart';
 
-/// Seed teal — native splash and Flutter splash must use this exact hex.
-const foodSeedColor = Color(0xFF0F766E);
+/// Brand seed (Alacena Bunker) — native splash and Flutter splash must match.
+const foodSeedColor = Color(0xFF2E7D4F);
 
-/// Central Material 3 theme for Food v1 (spec 002).
+/// Central Material 3 theme for Alacena Bunker (spec 004).
 ThemeData buildFoodTheme() {
   final scheme = ColorScheme.fromSeed(
     seedColor: foodSeedColor,

@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Food",
+  "appTitle": "Alacena Bunker",
   "tabActive": "Active",
   "tabExpired": "Expired",
   "sortByName": "Sort by name",
@@ -50,7 +50,7 @@
   "urgencySoon": "Soon",
   "urgencyOk": "OK",
   "emptyActiveHint": "Tap + to add the first one.",
-  "splashTagline": "Expiry at a glance",
+  "splashTagline": "Your food bunker for any situation",
   "reminderChannelName": "Expiry reminders",
   "reminderChannelDescription": "Alerts before your food expires",
   "reminderWhenToday": "today",
@@ -91,6 +91,6 @@
     "placeholders": { "lead": { "type": "String" } }
   },
   "reminderRuleOff": "No reminder",
-  "reminderPermissionDenied": "Notifications are turned off for Food, so reminders won't arrive.",
+  "reminderPermissionDenied": "Notifications are turned off for Alacena Bunker, so reminders won't arrive.",
   "reminderOpenSettings": "Turn on in settings"
 }
