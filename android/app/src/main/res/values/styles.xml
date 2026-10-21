@@ -3,8 +3,8 @@
     <style name="LaunchTheme" parent="@android:style/Theme.Light.NoTitleBar">
         <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
-    <!-- Same cream as splash so there is no white flash before Flutter draws. -->
+    <!-- Same launch image while Flutter boots (no white flash / layout jump). -->
     <style name="NormalTheme" parent="@android:style/Theme.Light.NoTitleBar">
-        <item name="android:windowBackground">@color/splash_background</item>
+        <item name="android:windowBackground">@drawable/launch_background</item>
     </style>
 </resources>

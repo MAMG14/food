@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:food/ui/theme/food_theme.dart';
@@ -8,7 +6,7 @@ import 'package:lottie/lottie.dart';
 /// Animated mark (cropped).
 const kSplashLottieAsset = 'assets/lottie/alacena_bunker_splash.json';
 
-/// Full splash still (logo + wordmark) — matches Android native splash.
+/// Full splash still (logo + wordmark) — same file as Android `splash_screen`.
 const kSplashScreenAsset = 'assets/images/splash_screen.png';
 
 /// Design size of [kSplashScreenAsset] (Figma 412×917 @3x).
@@ -20,7 +18,7 @@ const Rect kSplashIconInDesign = Rect.fromLTWH(450, 1045, 336, 531);
 const kSplashDuration = Duration(milliseconds: 1500);
 const kSplashFallbackMax = Duration(seconds: 3);
 
-/// Brand splash: native-matching still, then Lottie over the icon slot.
+/// Brand splash: still matches native (BoxFit.fill), Lottie only over the icon.
 class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
@@ -72,7 +70,6 @@ class _SplashGateState extends State<SplashGate> {
 
   @override
   Widget build(BuildContext context) {
-    // No cross-fade on the splash itself (avoids a second “jump”).
     if (!_showSplash) {
       return KeyedSubtree(key: const ValueKey('home'), child: widget.child);
     }
@@ -88,20 +85,17 @@ class SplashView extends StatelessWidget {
 
   final LottieComposition? composition;
 
-  /// Where the icon sits when [kSplashScreenAsset] is drawn with [BoxFit.cover].
-  static Rect iconRectForCover(Size screen) {
+  /// Icon slot when the still is drawn with [BoxFit.fill] (Android `gravity=fill`).
+  static Rect iconRectForFill(Size screen) {
     final image = kSplashScreenDesignSize;
-    final scale = math.max(screen.width / image.width, screen.height / image.height);
-    final fittedW = image.width * scale;
-    final fittedH = image.height * scale;
-    final dx = (screen.width - fittedW) / 2;
-    final dy = (screen.height - fittedH) / 2;
+    final sx = screen.width / image.width;
+    final sy = screen.height / image.height;
     final r = kSplashIconInDesign;
     return Rect.fromLTWH(
-      dx + r.left * scale,
-      dy + r.top * scale,
-      r.width * scale,
-      r.height * scale,
+      r.left * sx,
+      r.top * sy,
+      r.width * sx,
+      r.height * sy,
     );
   }
 
@@ -109,7 +103,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     const bg = splashCanvasColor;
     final screen = MediaQuery.sizeOf(context);
-    final iconRect = iconRectForCover(screen);
+    final iconRect = iconRectForFill(screen);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
@@ -117,17 +111,18 @@ class SplashView extends StatelessWidget {
         systemNavigationBarColor: bg,
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
-      child: Scaffold(
-        backgroundColor: bg,
-        body: Stack(
+      child: ColoredBox(
+        color: bg,
+        child: Stack(
           fit: StackFit.expand,
           children: [
-            // Same frame as the Android launch image → seamless handoff.
+            // Must match Android launch bitmap (`gravity=fill`) exactly.
             Image.asset(
               kSplashScreenAsset,
-              fit: BoxFit.cover,
+              fit: BoxFit.fill,
               alignment: Alignment.center,
-              filterQuality: FilterQuality.medium,
+              filterQuality: FilterQuality.low,
+              gaplessPlayback: true,
             ),
             if (composition != null)
               Positioned(
@@ -137,7 +132,7 @@ class SplashView extends StatelessWidget {
                 height: iconRect.height,
                 child: Lottie(
                   composition: composition,
-                  fit: BoxFit.contain,
+                  fit: BoxFit.fill,
                   repeat: false,
                 ),
               ),
