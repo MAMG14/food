@@ -123,11 +123,13 @@ class SplashView extends StatelessWidget {
                 Text(
                   l10n.splashBrandName,
                   textAlign: TextAlign.center,
-                  style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  style: const TextStyle(
+                    fontFamily: splashBrandFontFamily,
+                    fontSize: splashBrandFontSize,
+                    fontWeight: FontWeight.w400,
                     color: Colors.black,
-                    fontWeight: FontWeight.w800,
-                    letterSpacing: 1.2,
-                    height: 1.1,
+                    height: 1.0,
+                    letterSpacing: 0,
                   ),
                 ),
               ],

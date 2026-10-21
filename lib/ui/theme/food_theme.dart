@@ -7,6 +7,10 @@ const foodSeedColor = Color(0xFF2E7D4F);
 /// Splash / onboarding canvas from Figma (cream).
 const splashCanvasColor = Color(0xFFF7F3EE);
 
+/// Splash brand wordmark (Figma: Langar Regular 36).
+const splashBrandFontFamily = 'Langar';
+const splashBrandFontSize = 36.0;
+
 /// Central Material 3 theme for Alacena Bunker (spec 004).
 ThemeData buildFoodTheme() {
   final scheme = ColorScheme.fromSeed(
