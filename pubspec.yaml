@@ -69,6 +69,8 @@ flutter:
 
   assets:
     - assets/lottie/alacena_bunker_splash.json
+    - assets/images/splash_screen.png
+    - assets/images/splash_mark.png
 
   fonts:
     - family: Langar

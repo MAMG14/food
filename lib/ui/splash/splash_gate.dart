@@ -2,20 +2,25 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:food/l10n/app_localizations.dart';
 import 'package:food/ui/theme/food_theme.dart';
 import 'package:lottie/lottie.dart';
 
-/// Asset path for the Alacena Bunker splash animation (spec 004).
+/// Animated mark (cropped).
 const kSplashLottieAsset = 'assets/lottie/alacena_bunker_splash.json';
 
-/// Natural Lottie length (~1.5 s at 30 fps).
-const kSplashDuration = Duration(milliseconds: 1500);
+/// Full splash still (logo + wordmark) — matches Android native splash.
+const kSplashScreenAsset = 'assets/images/splash_screen.png';
 
-/// Hard cap if load/play never completes.
+/// Design size of [kSplashScreenAsset] (Figma 412×917 @3x).
+const Size kSplashScreenDesignSize = Size(1236, 2751);
+
+/// Icon rect inside [kSplashScreenDesignSize].
+const Rect kSplashIconInDesign = Rect.fromLTWH(450, 1045, 336, 531);
+
+const kSplashDuration = Duration(milliseconds: 1500);
 const kSplashFallbackMax = Duration(seconds: 3);
 
-/// Brand splash: Lottie + «ALACENA BUNKER» (Figma), then fade into [child].
+/// Brand splash: native-matching still, then Lottie over the icon slot.
 class SplashGate extends StatefulWidget {
   const SplashGate({
     super.key,
@@ -24,8 +29,6 @@ class SplashGate extends StatefulWidget {
   });
 
   final Widget child;
-
-  /// [Duration.zero] skips the splash (tests).
   final Duration duration;
 
   @override
@@ -69,16 +72,13 @@ class _SplashGateState extends State<SplashGate> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(milliseconds: 350),
-      switchInCurve: Curves.easeOut,
-      switchOutCurve: Curves.easeIn,
-      child: _showSplash
-          ? SplashView(
-              key: const ValueKey('splash'),
-              composition: _composition,
-            )
-          : KeyedSubtree(key: const ValueKey('home'), child: widget.child),
+    // No cross-fade on the splash itself (avoids a second “jump”).
+    if (!_showSplash) {
+      return KeyedSubtree(key: const ValueKey('home'), child: widget.child);
+    }
+    return SplashView(
+      key: const ValueKey('splash'),
+      composition: _composition,
     );
   }
 }
@@ -88,23 +88,28 @@ class SplashView extends StatelessWidget {
 
   final LottieComposition? composition;
 
+  /// Where the icon sits when [kSplashScreenAsset] is drawn with [BoxFit.cover].
+  static Rect iconRectForCover(Size screen) {
+    final image = kSplashScreenDesignSize;
+    final scale = math.max(screen.width / image.width, screen.height / image.height);
+    final fittedW = image.width * scale;
+    final fittedH = image.height * scale;
+    final dx = (screen.width - fittedW) / 2;
+    final dy = (screen.height - fittedH) / 2;
+    final r = kSplashIconInDesign;
+    return Rect.fromLTWH(
+      dx + r.left * scale,
+      dy + r.top * scale,
+      r.width * scale,
+      r.height * scale,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final l10n = AppLocalizations.of(context);
     const bg = splashCanvasColor;
-    final size = MediaQuery.sizeOf(context);
-    final scale = size.width / splashFigmaArtboardWidth;
-    // 1:1 with cropped Lottie / Figma icon frame (no padding factor).
-    var iconW = splashLottieWidth * scale;
-    var iconH = splashLottieHeight * scale;
-    // Keep mark + title inside short viewports (e.g. tests / landscape).
-    final maxIconH = size.height * 0.42;
-    if (iconH > maxIconH) {
-      final shrink = maxIconH / iconH;
-      iconW *= shrink;
-      iconH = maxIconH;
-    }
-    final brandSize = math.max(22.0, splashBrandFontSize * scale);
+    final screen = MediaQuery.sizeOf(context);
+    final iconRect = iconRectForCover(screen);
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark.copyWith(
@@ -114,44 +119,29 @@ class SplashView extends StatelessWidget {
       ),
       child: Scaffold(
         backgroundColor: bg,
-        body: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (composition == null)
-                  SizedBox(
-                    width: iconW * 0.25,
-                    height: iconW * 0.25,
-                    child: const CircularProgressIndicator(
-                      color: foodSeedColor,
-                    ),
-                  )
-                else
-                  Lottie(
-                    composition: composition,
-                    width: iconW,
-                    height: iconH,
-                    fit: BoxFit.contain,
-                    repeat: false,
-                  ),
-                SizedBox(height: 16 * scale),
-                Text(
-                  l10n.splashBrandName,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontFamily: splashBrandFontFamily,
-                    fontSize: brandSize,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black,
-                    height: 1.0,
-                    letterSpacing: 0,
-                  ),
-                ),
-              ],
+        body: Stack(
+          fit: StackFit.expand,
+          children: [
+            // Same frame as the Android launch image → seamless handoff.
+            Image.asset(
+              kSplashScreenAsset,
+              fit: BoxFit.cover,
+              alignment: Alignment.center,
+              filterQuality: FilterQuality.medium,
             ),
-          ),
+            if (composition != null)
+              Positioned(
+                left: iconRect.left,
+                top: iconRect.top,
+                width: iconRect.width,
+                height: iconRect.height,
+                child: Lottie(
+                  composition: composition,
+                  fit: BoxFit.contain,
+                  repeat: false,
+                ),
+              ),
+          ],
         ),
       ),
     );
