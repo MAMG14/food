@@ -10,7 +10,7 @@ Implementar por bloques (skill `sdd`): en orden, tests de lógica primero, `flut
 - [x] **T2. Preferencias de onboarding + skip por instalación previa.** RF-5–6
   - Hecho cuando: tests cubren flag por defecto, `markCompleted`, “hay artículos ⇒ completed”, y “archivo SQLite ya existía + 0 artículos ⇒ completed” (instalación limpia sin DB ⇒ no completed).
 
-- [ ] **T3. Dependencias y assets.** RNF-4
+- [x] **T3. Dependencias y assets.** RNF-4
   - Hecho cuando: `lottie` + `shared_preferences` en `pubspec.yaml`; Lottie registrado; `flutter pub get` ok.
 
 - [ ] **T4. Tema Alacena Bunker + display name + splash nativo.** RF-1, RF-3, RF-17
