@@ -75,3 +75,26 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
 - **Contexto:** la marca visible ya era Alacena Bunker (004) y el id de instalación seguía siendo el temporal `com.example.food`.
 - **Decisión:** identificador único `com.developermarco.alacenabunker` en Android e iOS. Una instalación previa con el id viejo es otra app: no se migran sus datos.
 - **Descartado:** conservar `com.example.food` solo en iOS; migrar la base local entre ids.
+
+## D-009 — Icono de launcher a partir de `Frame 1.png`
+
+- Fecha: 2026-10-25 · Estado: sustituida por D-010 · Afecta: icono de Android e iOS
+- **Contexto:** el usuario aportó `Frame 1.png` (1024×1024, puerta del búnker). El PNG trae canal alfa en los laterales y la puerta llega casi al borde superior e inferior.
+- **Decisión:** fuente en `assets/icon/app_icon.png`, fondo opaco `#29294A` (el azul del dibujo). Android adaptativo usa ese mismo color y un margen del 18 % para que el recorte circular no corte la puerta. iOS sin transparencia.
+- **Descartado:** usar el PNG tal cual (laterales transparentes y recorte del marco en Android); generar a mano cada densidad.
+
+## D-010 — Fondo transparente en el icono de launcher
+
+- Fecha: 2026-10-25 · Estado: sustituida por D-011 · Sustituye: D-009 · Afecta: icono de Android e iOS
+- **Contexto:** el usuario pidió quitar el fondo azul añadido en D-009.
+- **Decisión:** `assets/icon/app_icon.png` es el PNG original, con los laterales en alfa 0. No hay icono adaptativo ni color de fondo: Android e iOS usan ese canal alfa.
+- **Descartado:** mantener `#29294A` opaco.
+- **Consecuencias:** en el iPhone el sistema rellena el alfa con negro y App Store no acepta el icono hasta aplanarlo. En Android el hueco se ve según el launcher (escritorio o negro).
+
+## D-011 — Fondo crema del icono de launcher
+
+- Fecha: 2026-10-25 · Estado: vigente · Sustituye: D-010 · Afecta: icono de Android e iOS
+- **Contexto:** el usuario pidió un fondo de color en lugar de la transparencia de D-010.
+- **Decisión:** los laterales transparentes se rellenan con `#F7F3EC`. Android adaptativo usa ese color de fondo. iOS queda opaco con el mismo color.
+- **Descartado:** dejar el alfa en 0; volver al azul `#29294A`.
+- **Actualización (2026-10-25):** el margen adaptativo en 0 recortaba la puerta (el círculo de Android solo muestra el centro). Margen del 20 % para que la puerta entre en la zona segura.

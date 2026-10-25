@@ -2,4 +2,5 @@
 <resources>
     <!-- Figma splash canvas (cream #F7F3EE). -->
     <color name="splash_background">#FFF7F3EE</color>
+    <color name="ic_launcher_background">#F7F3EC</color>
 </resources>

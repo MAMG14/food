@@ -62,6 +62,19 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
   sqflite_common_ffi: ^2.4.3
+  flutter_launcher_icons: ^0.14.4
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: assets/icon/app_icon.png
+  remove_alpha_ios: true
+  background_color_ios: "#F7F3EC"
+  adaptive_icon_background: "#F7F3EC"
+  adaptive_icon_foreground: assets/icon/app_icon.png
+  # Android recorta en círculo el 108 dp y solo garantiza el centro (~66 dp).
+  # La puerta ocupa casi todo el alto del PNG; 20 % de margen la mete en esa zona.
+  adaptive_icon_foreground_inset: 20
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
