@@ -7,7 +7,8 @@ Resumen para retomar el trabajo. **No es la fuente del estado**: el progreso viv
 - Inventario local con caducidad (spec 001).
 - Recordatorios locales configurables (spec 003).
 - UI **Alacena Bunker** (spec 004, implementada): marca, Lottie splash, onboarding 1ª vez, Home con tarjetas Óptimo / Por caducar / Caducado, tabs Home/Añadir, edge-to-edge (D-005).
-- Fuera por ahora: nube, login, espacios casa/negocio, cambio de `applicationId`.
+- Identificador de instalación: `com.developermarco.alacenabunker` (spec 006). El nombre visible sigue siendo Alacena Bunker.
+- Fuera por ahora: nube, login, espacios casa/negocio.
 
 ## Dónde mirar
 

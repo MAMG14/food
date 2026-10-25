@@ -4,7 +4,7 @@ Guía operativa para agentes de Cursor en este proyecto.
 
 ## Qué es este proyecto
 
-App Flutter (Android + iOS) para listar alimentos de casa o de un negocio con fecha de caducidad. MVP: inventario local (crear, editar, borrar, listar activos/caducados, ordenar). Sin login ni nube. Marca temporal: Food (`com.example.food`).
+App Flutter (Android + iOS) para listar alimentos de casa o de un negocio con fecha de caducidad. MVP: inventario local (crear, editar, borrar, listar activos/caducados, ordenar). Sin login ni nube. Marca visible: Alacena Bunker. Identificador: `com.developermarco.alacenabunker`.
 
 ## Documentos de verdad
 

@@ -16,7 +16,7 @@ Los mismos que en spec 001 (casa o negocio, lista plana).
 
 | Tema | Decisión |
 |------|----------|
-| Marca | Nombre visible **Alacena Bunker** (UI, splash, onboarding, título de app en el dispositivo). El application id `com.example.food` se mantiene en esta spec (cambio de id = otra spec). |
+| Marca | Nombre visible **Alacena Bunker** (UI, splash, onboarding, título de app en el dispositivo). El application id `com.example.food` se mantuvo en esta spec; el id definitivo está en spec 006 (`com.developermarco.alacenabunker`). |
 | Splash | Arranque en frío: splash nativo estático coherente con la marca + en Flutter el Lottie (~1,5 s, duración natural del asset). Luego onboarding (1ª vez) o Home. |
 | Onboarding | Una sola pantalla de bienvenida + «Iniciar»; **solo la primera vez** (flag local). No es un tutorial multipaso. |
 | Tarjetas Home | Óptimo / Por caducar / Caducado con contadores; **al tocar filtran** la lista. |
@@ -95,7 +95,7 @@ Los mismos que en spec 001 (casa o negocio, lista plana).
 
 ## Fuera de alcance
 
-- Cambiar `applicationId` / bundle id (`com.example.food`).
+- Cambiar `applicationId` / bundle id (en esta spec se dejó `com.example.food`; el id definitivo es el de la spec 006).
 - Icono de launcher definitivo (puede quedar el actual o un placeholder; asset de icono nuevo solo si el usuario lo aporta en esta fase).
 - Dark mode, tutorial multipaso, animaciones Lottie fuera del splash.
 - Nuevas features de inventario (espacios, nube, login).

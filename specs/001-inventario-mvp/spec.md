@@ -66,7 +66,7 @@ Cualquier persona que gestione alimentos en casa o en un negocio pequeño. En el
 - RNF-2: Datos solo en almacenamiento local del dispositivo.
 - RNF-3: Textos de UI en español vía mecanismo de i18n (preparado para más idiomas).
 - RNF-4: La lógica de fecha efectiva, clasificación activo/caducado y ordenación debe ser comprobable con tests automatizados (`flutter test`).
-- RNF-5: Identidad de app temporal `Food` / `com.example.food` hasta nueva spec de marca.
+- RNF-5: Identidad de app temporal en esta spec: `Food` / `com.example.food`. El nombre visible lo fijó la spec 004 y el identificador la spec 006 (`com.developermarco.alacenabunker`).
 
 ## Casos límite
 

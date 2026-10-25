@@ -45,7 +45,7 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
   3. La skill `ui-design` exige mirar capturas reales en cada cambio visible y seguir las referencias del usuario en `docs/design/referencias/`.
 - **Descartado por ahora:** golden tests (útiles cuando haya un diseño estable que proteger).
 - **Actualización (2026-10-21):** MCP Figma remoto en `.cursor/mcp.json`. Spec 004 implementa UI Alacena Bunker (Lottie splash, onboarding, Home con filtros, tabs). Seed de tema `#2E7D4F`.
-- **Consecuencias:** la marca visible y el flujo de arranque pasan a 004; el `applicationId` sigue siendo `com.example.food` hasta otra spec.
+- **Consecuencias:** la marca visible y el flujo de arranque pasan a 004. El `applicationId` quedó en `com.example.food` hasta la spec 006 (D-008).
 
 ## D-005 — Edge-to-edge obligatorio (targetSdk 36)
 
@@ -68,3 +68,10 @@ Formato: contexto → decisión → alternativas descartadas → consecuencias. 
 - **Contexto:** tras escanear, la confirmación mostraba la imagen de red; al guardar se lanzaba la descarga local en segundo plano y al cerrar el escáner se cerraba el `http.Client` → la descarga fallaba en silencio y en edición no había foto.
 - **Decisión:** `ProductImageStore` vive en `HomeShell` (no se cierra con la ruta de escaneo); al guardar se **espera** `downloadAndAttach` antes de volver a Home (fallos siguen tragados en el almacén).
 - **Descartado:** cliente HTTP efímero por descarga (rompe mocks de test); dejar la descarga fire-and-forget tras pop.
+
+## D-008 — Identificador `com.developermarco.alacenabunker` (spec 006)
+
+- Fecha: 2026-10-25 · Estado: vigente · Afecta: `applicationId` Android, bundle id iOS, paquete de `MainActivity`
+- **Contexto:** la marca visible ya era Alacena Bunker (004) y el id de instalación seguía siendo el temporal `com.example.food`.
+- **Decisión:** identificador único `com.developermarco.alacenabunker` en Android e iOS. Una instalación previa con el id viejo es otra app: no se migran sus datos.
+- **Descartado:** conservar `com.example.food` solo en iOS; migrar la base local entre ids.
